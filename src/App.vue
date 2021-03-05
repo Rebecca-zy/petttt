@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <v-top></v-top>
     <!--  <keep-alive> 帮助获取路由跳转监听 -->
     <keep-alive>
       <router-view></router-view>
@@ -9,11 +8,7 @@
 </template>
 
 <script>
-import vTop from '@/components/topselect'
 export default {
-  components:{
-        vTop
-    },
   name: "App",
   mounted() {
     // // 关闭浏览器窗口的时候清空浏览器缓存在localStorage的数据

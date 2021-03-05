@@ -66,7 +66,7 @@ export default {
       var e=document.getElementById("topinput");
       console.log(e.value);
       this.$router.push({
-        name: 'Search',
+        name: 'search',
         path:"/search",
         params: {
           topsearch: e.value,
