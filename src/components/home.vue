@@ -310,7 +310,7 @@ export default {
     },
     activated:function(){
         this.gethot()
-        this.change()   
+        this.change() 
     },
     methods:{
         // 先反id then里面赋值

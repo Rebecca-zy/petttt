@@ -3,21 +3,21 @@
 <template>
     <div class="tab">
       <img :src="topUrl" class="toplogo">
-      <p @click="top_goto('home',1)"  class="webitem15">首页</p>
-      <p @click="top_goto('pethome',2)" class="webitem15">流浪之家💕</p>
-      <p @click="top_goto('knowledgecard',3)" class="webitem15">宠物识别🔍</p>
-      <p @click="top_goto('hospital',4)" class="webitem15">医疗资源💊</p>
+      <p @click="top_goto('home',1)"  :class="[nowpage==1?'webitem1_a':'webitem1']">首页</p>
+      <p @click="top_goto('pethome',2)" :class="[nowpage==2?'webitem1_a':'webitem1']">流浪之家💕</p>
+      <p @click="top_goto('knowledgecard',3)" :class="[nowpage==3?'webitem1_a':'webitem1']">宠物识别🔍</p>
+      <p @click="top_goto('hospital',4)" :class="[nowpage==4?'webitem1_a':'webitem1']">医疗资源💊</p>
       <img :src="imgUrl" class="img">
-      <p class="webitem3">扫码小程序</p>
-      <!-- <div class="sousuo"> -->
+      <p class="webitem1">扫码小程序</p>
+      <div class="sousuo">
         <input type="text" class="webitem4" ref="topsearchval" id="topinput"></input>
         <div class="webitem5" @click="top_gotosearch">
           <p  class="text1">搜索</p>
         </div>
-      <!-- </div> -->
+      </div>
       <img :src="userimg" @click="top_gotouser()" class="userimg" >
-      <p v-if="islogin==0" class="webitem6" @click="top_goto('content',5)">登陆</p>
-      <p  v-if="islogin==0" class="webitem7" @click="top_goto('petregister',6)">注册</p>
+      <p v-if="islogin==0" :class="[nowpage==5?'webitem1_a':'webitem1']" @click="top_goto('content',5)">登陆</p>
+      <p  v-if="islogin==0" :class="[nowpage==6?'webitem1_a':'webitem1']" @click="top_goto('petregister',6)">注册</p>
     </div>
 </template>
 
@@ -46,6 +46,8 @@ export default {
           console.log('错误！！！！：'+err)
       })
     }
+    console.log(window.location.href)
+    this.nowpage=localStorage.getItem('nowpage')
   },
   methods: {
     top_gotouser(){
@@ -57,7 +59,7 @@ export default {
       }
     },
     top_goto(e,t){
-      this.nowpage=t
+      localStorage.setItem("nowpage",t)
       this.$router.push('/'+e);
     },
     top_gotosearch(){
@@ -95,40 +97,28 @@ export default {
   margin-top: 15px;
   height: 38px;
 }
-
 .webitem1{
   height: 23px;
-  /* color: #030303; */
   margin-top: 1.75%;
-
 }
-.webitem15{
-  
-  margin-top:1.75%;
-  height: 22px;
-  /* color: #000000; */
-
-}
-.webitem2{
-  margin-top:2%;
-  height: 22px;
-  /* color: #000000; */
-
+.webitem1_a{
+  height: 23px;
+  margin-top: 1.75%;
+  color:#4FA1F4;
 }
 .img{
   margin-top: 19px;
   margin-bottom: 13px;
-  flex: 0 0 35px;
   height: 45px;
 }
-.webitem3{
-  margin-top: 2%;
-  height: 23px;
-  /* color: #000000; */
+.sousuo{
+  width: 330px;
+  display: flex;
+  flex-direction: row;
+  margin-top: 1%;
 }
 .text1{
   height: 23px;
-  /* color: #2E3232; */
   margin-top: 15%;
 }
 .webitem4{
@@ -147,14 +137,5 @@ export default {
   height: 75px;
   border-radius: 50%;
 }
-.webitem6{
-  /* color: #030303; */
-  margin-top: 2%;
-}
-.webitem7{
-  color: #030303;
-  margin-top: 2%;
-}
-
 </style>
 
