@@ -69,7 +69,7 @@ const axios=require('axios');
 import usercomp from "./Testcomp/Testcomp"
 import vTop from "@/components/topselect";
 export default {
-  name: "Search",
+  name: "search",
   components: {
     usercomp,
     vTop

@@ -53,9 +53,11 @@ export default {
     top_gotouser(){
       if(localStorage.getItem('yhid')){
         this.$router.push('/userhistory');
+        localStorage.setItem("nowpage",0)
       }
       else{
         this.$router.push('/content');
+        localStorage.setItem("nowpage",5)
       }
     },
     top_goto(e,t){
@@ -73,6 +75,7 @@ export default {
         }
             })
       this.$refs.topsearchval.value="";
+      localStorage.setItem("nowpage",0)
 
     },
   }
