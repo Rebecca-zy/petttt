@@ -1,48 +1,48 @@
 <template>
   <div class="building1">
     <v-top></v-top>
-      <div class="search" style="display: flex;flex-direction: row;justify-content: center">
-        <input class="s-search-text" type="text" placeholder="猜你喜欢" id="s-search-text" ref="searchval">
-        <div class="webitem5" style="display: flex;flex-direction: row;justify-content: center" @click="search">
-          <p class="text1">搜索</p>
-          <img :src="searchicon">
-        </div>
+    <div class="search" style="display: flex;flex-direction: row;justify-content: center">
+      <input class="s-search-text" type="text" placeholder="猜你喜欢" id="s-search-text" ref="searchval">
+      <div class="webitem5" style="display: flex;flex-direction: row;justify-content: center" @click="search">
+        <p class="text1">搜索</p>
+        <img :src="searchicon">
       </div>
-      <div class="lead" style="display: flex;flex-direction: row;justify-content: center">
-        <div class="nav-box" >
-          <!-- 导航列表 -->
-          <li class="nav-item"
-              v-for="(item, index) in nav"
-              @click="routerLink(index, item.path)"
-              :key="index">
-            <!-- 判断高亮表 -->
-            <p :class=" navIndex === index ? 'item-cn item-cn-active' : 'item-cn'">
-              {{ item.title }}
-            </p>
-          </li>
-        </div>
-        <img :src="laycat" class="laycat">
+    </div>
+    <div class="lead" style="display: flex;flex-direction: row;justify-content: center">
+      <div class="nav-box" >
+        <!-- 导航列表 -->
+        <li class="nav-item"
+            v-for="(item, index) in nav"
+            @click="routerLink(index, item.path)"
+            :key="index">
+          <!-- 判断高亮表 -->
+          <p :class=" navIndex === index ? 'item-cn item-cn-active' : 'item-cn'">
+            {{ item.title }}
+          </p>
+        </li>
       </div>
-      <div class="line"></div>
-      <div class="btns">
-        <div style="display: flex;flex-direction: row;">
-          <button @click="mostCollects" class="btngroup1">最多收藏</button>
-          <button @click="mostLikes" class="btngroup1">最多喜欢</button>
-          <button @click="latestReleased" class="btngroup1">最多关注</button>
-        </div>
-        <div>
-          <button @click="lovelyPets" class="btngroup2">萌宠日常</button>
-          <button @click="warmTips" class="btngroup2">喂养贴士</button>
-          <button @click="training" class="btngroup2">学习训练</button>
-          <button @click="diyClass" class="btngroup2">DIY课堂</button>
-        </div>
-        <div>
-          <button class="btngroup3" @click="dog">狗狗</button>
-          <button class="btngroup3" @click="cat">猫咪</button>
-          <button class="btngroup3" @click="rabbit">兔子</button>
-          <button class="btngroup3" @click="mouse">仓鼠</button>
-        </div>
+      <img :src="laycat" class="laycat">
+    </div>
+    <div class="line"></div>
+    <div class="btns">
+      <div style="display: flex;flex-direction: row;">
+        <button @click="mostCollects" class="btngroup1">最多收藏</button>
+        <button @click="mostLikes" class="btngroup1">最多喜欢</button>
+        <button @click="latestReleased" class="btngroup1">最多关注</button>
       </div>
+      <div>
+        <button @click="lovelyPets" class="btngroup2">萌宠日常</button>
+        <button @click="warmTips" class="btngroup2">喂养贴士</button>
+        <button @click="training" class="btngroup2">学习训练</button>
+        <button @click="diyClass" class="btngroup2">DIY课堂</button>
+      </div>
+      <div>
+        <button class="btngroup3" @click="dog">狗狗</button>
+        <button class="btngroup3" @click="cat">猫咪</button>
+        <button class="btngroup3" @click="rabbit">兔子</button>
+        <button class="btngroup3" @click="mouse">仓鼠</button>
+      </div>
+    </div>
     <div class="bottom">
       <div class="box"  >
         <el-card  class="messagecard" v-if="showflag==true&&index<length&&item.show!=false"
@@ -50,7 +50,7 @@
           <!-- 用户信息 -->
           <el-row >
             <el-col  :span="4" class="userleft">
-              <img @click="gotouser(item.username,useridtmp[index],item.userUrl)" class="userurl" :size="100"  :src="item.userUrl"></img>
+              <img @click="gotouser(item.username,useridtmp[index],item.userUrl)" class="userurl" :size="100"  :src="item.userUrl">
             </el-col >
             <el-col :span="6" class="userright">
               <el-row>
@@ -73,10 +73,10 @@
               <div class="messagetext">{{item.passage}}</div>
             </div>
             <el-image  v-for="(photo,photolen) in item.photourl" v-if="photolen<item.photolen" :key="photolen"
-                     style="width: 221px; height: 150px;padding:1px"
-                     :src="photo"
-                     :preview-src-list="item.photourl"
-                     fit="cover"/>
+                       style="width: 221px; height: 150px;padding:1px"
+                       :src="photo"
+                       :preview-src-list="item.photourl"
+                       fit="cover"/>
             <el-row  class="lovestar" >
               <el-col  :span="10" >
                 <div class="txt" style="font-weight:bold" >
@@ -114,30 +114,30 @@ export default {
       id:null,
       ph:{},
       messageinform:[
-          {
-            sectionflag:false,
-            warmflag:false,
-            trainflag:false,
-            diyflag:false,
-            section:"",
-            show:false,
-            messagenum:1,
-            username:"用户名",
-            userUrl:'',
-            datatime:"2020-12-26",
-            passage:"这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字",
-            lovenumber:15,
-            islove:"喜欢",
-            starnumber:9,
-            isstar:"收藏",
-            fans:0,
-            photourl:[],
-            photolen:0,
-            flag:true,
-            msg:"",
-            star:false,
-            love:false
-          },
+        {
+          sectionflag:false,
+          warmflag:false,
+          trainflag:false,
+          diyflag:false,
+          section:"",
+          show:false,
+          messagenum:1,
+          username:"用户名",
+          userUrl:'',
+          datatime:"2020-12-26",
+          passage:"这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字这是一段示例文字",
+          lovenumber:15,
+          islove:"喜欢",
+          starnumber:9,
+          isstar:"收藏",
+          fans:0,
+          photourl:[],
+          photolen:0,
+          flag:true,
+          msg:"",
+          star:false,
+          love:false
+        },
         {
           sectionflag:false,
           warmflag:false,
@@ -228,8 +228,40 @@ export default {
     }
   },
   activated:function(){
-      console.log(this.$refs.searchval.value)
+    if(this.$route.params.topsearch){
+      this.$refs.searchval.value=this.$route.params.topsearch
       this.search()
+    }
+    console.log(this.$route.params.homesearch)
+    if(this.$route.params.homesearch){
+      var tmp=this.$route.params.homesearch
+      if(tmp=='1'){
+        this.lovelyPets()
+      }
+      else if(tmp=='2'){
+        this.training();
+      }
+      else if(tmp=='3'){
+        this.warmTips()
+      }
+      else if(tmp=='4'){
+        this.diyClass();
+      }
+
+      if(tmp=='兔子'){
+        this.rabbit()
+      }
+      else if(tmp=='猫咪'){
+        this.cat();
+      }
+      else if(tmp=='仓鼠'){
+        this.mouse()
+      }
+      else if(tmp=='狗狗'){
+        this.dog()
+      }
+
+    }
   },
   methods:{
     lovelyPets(){
@@ -238,10 +270,11 @@ export default {
       //根据记录搜索相关分区信息
       let searchText = this.$refs.searchval.value
       console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // if (searchText =='') {
+      //   return;
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/targetsearch',
             {
@@ -270,19 +303,19 @@ export default {
                     }
                   })
                       .then(res => {
-                    _this.messageinform[i].show=true
-                    _this.messageinform[i].messagenum=res.data.jlid
-                    _this.messageinform[i].username=res.data.yhm
-                    _this.messageinform[i].datatime=res.data.fbsj
-                    _this.messageinform[i].passage=res.data.wz
-                    axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
-                      if(response){
-                        var data=response.data;
-                        this.messageinform[i].fans=data
-                      }
-                    }).catch(function (error) { // 请求失败处理
-                      console.log("---查询出错---！"+error);
-                    })
+                        _this.messageinform[i].show=true
+                        _this.messageinform[i].messagenum=res.data.jlid
+                        _this.messageinform[i].username=res.data.yhm
+                        _this.messageinform[i].datatime=res.data.fbsj
+                        _this.messageinform[i].passage=res.data.wz
+                        axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
+                          if(response){
+                            var data=response.data;
+                            this.messageinform[i].fans=data
+                          }
+                        }).catch(function (error) { // 请求失败处理
+                          console.log("---查询出错---！"+error);
+                        })
                         axios.post('/getSection',{
                           jlid:tmp
                         }).then(res=>{
@@ -303,57 +336,57 @@ export default {
                         })
 
                         axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
-                        .then(r=>{
-                          _this.messageinform[i].userUrl=r.data.tx;
-                        }).catch(err => {
-                      console.log('错误！！！！：'+err)
-                    })
-                    axios.get('/getPhotoByjlid',{
-                      params:{
-                        jlid:tmp
-                      }
-                    })
-                        .then(res => {
-                      _this.ph=res.data
-                      var j=0
-                      for(j=0;j<_this.ph.length;j++){
-                        _this.messageinform[i].photourl[j]=_this.ph[j].zp
-                      }
-                          _this.messageinform[i].photolen=_this.ph.length
-                          console.log("photolen:"+ _this.messageinform[i].photolen)
-                      axios.post('/likecount?jlid='+tmp)
-                          .then(res=>{
-                        //console.log(res.data)
-                        _this.messageinform[i].lovenumber=res.data;
+                            .then(r=>{
+                              _this.messageinform[i].userUrl=r.data.tx;
+                            }).catch(err => {
+                          console.log('错误！！！！：'+err)
+                        })
+                        axios.get('/getPhotoByjlid',{
+                          params:{
+                            jlid:tmp
+                          }
+                        })
+                            .then(res => {
+                              _this.ph=res.data
+                              var j=0
+                              for(j=0;j<_this.ph.length;j++){
+                                _this.messageinform[i].photourl[j]=_this.ph[j].zp
+                              }
+                              _this.messageinform[i].photolen=_this.ph.length
+                              console.log("photolen:"+ _this.messageinform[i].photolen)
+                              axios.post('/likecount?jlid='+tmp)
+                                  .then(res=>{
+                                    //console.log(res.data)
+                                    _this.messageinform[i].lovenumber=res.data;
+                                  })
+                              axios.post('/starcount?jlid='+tmp)
+                                  .then(res=>{
+                                    //console.log(res.data)
+                                    _this.messageinform[i].starnumber=res.data;
+                                  })
+                              axios.get('/isfollow',{//查成功
+                                params:{
+                                  zyhid:localStorage.getItem('yhid'),
+                                  fsid:tmp
+                                }
+                              })
+                                  .then(res => {
+                                    // console.log(res.data)
+                                    if(res.data=="wu"){
+                                      this.messageinform[i].flag=false;
+                                      this.messageinform[i].msg="+关注"
+                                    }
+                                    else if(res.data=="1"){
+                                      this.messageinform[i].flag=false;
+                                      this.messageinform[i].msg="+关注"
+                                    }
+                                    else{
+                                      this.messageinform[i].flag=true;
+                                      this.messageinform[i].msg="已关注"
+                                    }
+                                  })
+                            })
                       })
-                      axios.post('/starcount?jlid='+tmp)
-                          .then(res=>{
-                        //console.log(res.data)
-                        _this.messageinform[i].starnumber=res.data;
-                      })
-                      axios.get('/isfollow',{//查成功
-                        params:{
-                          zyhid:localStorage.getItem('yhid'),
-                          fsid:tmp
-                        }
-                      })
-                          .then(res => {
-                        // console.log(res.data)
-                        if(res.data=="wu"){
-                          this.messageinform[i].flag=false;
-                          this.messageinform[i].msg="+关注"
-                        }
-                        else if(res.data=="1"){
-                          this.messageinform[i].flag=false;
-                          this.messageinform[i].msg="+关注"
-                        }
-                        else{
-                          this.messageinform[i].flag=true;
-                          this.messageinform[i].msg="已关注"
-                        }
-                      })
-                    })
-                  })
                       .catch(err => {
                         console.log('错误：'+err)
                       })
@@ -369,11 +402,12 @@ export default {
     warmTips(){
       // 喂养贴士
       let searchText = this.$refs.searchval.value
-      console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // console.log(searchText)
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/targetsearch',
             {
@@ -499,11 +533,12 @@ export default {
     training(){
       // 学习训练
       let searchText = this.$refs.searchval.value
-      console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // console.log(searchText)
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/targetsearch',
             {
@@ -630,11 +665,12 @@ export default {
     diyClass(){
       // diy课堂
       let searchText = this.$refs.searchval.value
-      console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // console.log(searchText)
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/targetsearch',
             {
@@ -761,10 +797,11 @@ export default {
     dog(){
       let searchText = this.$refs.searchval.value
       console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/animalsearch',
             {
@@ -871,10 +908,11 @@ export default {
     cat(){
       let searchText = this.$refs.searchval.value
       console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/animalsearch',
             {
@@ -980,11 +1018,12 @@ export default {
     },
     rabbit(){
       let searchText = this.$refs.searchval.value
-      console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // console.log(searchText)
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/animalsearch',
             {
@@ -1090,11 +1129,12 @@ export default {
     },
     mouse(){
       let searchText = this.$refs.searchval.value
-      console.log(searchText)
-      if (searchText =='') {
-        return
-      }
-      else {
+      // console.log(searchText)
+      // if (searchText =='') {
+      //   return
+      // }
+      // else
+      {
         this.showflag=true
         axios.post('/animalsearch',
             {
@@ -1203,8 +1243,8 @@ export default {
         var value1 = a[property];
         var value2 = b[property];
         return value2 - value1;
-  }
-},
+      }
+    },
     mostCollects(){
       //最多收藏
       {
@@ -1657,10 +1697,10 @@ export default {
                   let tmp=this.recordid[i];
                   const _this = this
                   axios.get('/getShareByjlid',{
-                      params:{
-                        jlid:tmp
-                      }
-                    }).then(res => {
+                    params:{
+                      jlid:tmp
+                    }
+                  }).then(res => {
                     // console.log(res.data)
                     // var config={
                     //   messagenum:res.data.jlid,
@@ -1704,7 +1744,7 @@ export default {
                       }
                       axios.post('/likecount?jlid='+tmp).then(res=>{
                         //console.log(res.data)
-                       _this.messageinform[i].lovenumber=res.data;
+                        _this.messageinform[i].lovenumber=res.data;
                       })
                       axios.post('/starcount?jlid='+tmp).then(res=>{
                         //console.log(res.data)
@@ -1737,10 +1777,10 @@ export default {
                         .catch(err => {
                           console.log('错误！！！！：'+err)
                         })
-                    })
-                        .catch(err => {
-                          console.log('错误：'+err)
-                        })
+                  })
+                      .catch(err => {
+                        console.log('错误：'+err)
+                      })
                   // console.log("看这里！！！！！：")
                 }
               }
