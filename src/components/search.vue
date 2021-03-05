@@ -44,12 +44,12 @@
               <div class="momenttext" style="margin-bottom: 1%;">最近动态：{{item.info}}</div>
               <div class="imgs" style="display: flex;flex-direction: row;" >
                 <el-image class="shareimg1"  v-for="(photo) in item.photo" :key="photo.key"
-                           :src="photo"
-                           :preview-src-list="item.photo"
-                           fit="cover"/>
-<!--                <img :src="item.photo[0]" class="shareimg1" v-if="item.photo[0]!=''">-->
-<!--                <img :src="item.photo[1]" class="shareimg2" v-if="item.photo[1]!=''">-->
-<!--                <img :src="item.photo[2]" class="shareimg3" v-if="item.photo[2]!=''">-->
+                          :src="photo"
+                          :preview-src-list="item.photo"
+                          fit="cover"/>
+                <!--                <img :src="item.photo[0]" class="shareimg1" v-if="item.photo[0]!=''">-->
+                <!--                <img :src="item.photo[1]" class="shareimg2" v-if="item.photo[1]!=''">-->
+                <!--                <img :src="item.photo[2]" class="shareimg3" v-if="item.photo[2]!=''">-->
               </div>
             </div>
 
@@ -57,9 +57,9 @@
         </div>
       </div>
 
-<!--      <div v-for="(user,index) in Sort" :key="index">-->
-<!--          <usercomp  @getflag="getflag" :id="index" :flag="user.flag" :photo="user.photo" :circleurl="user.circleurl" :name="user.username" :num="user.num" :information="user.info" :count="user.count"></usercomp>-->
-<!--      </div>-->
+      <!--      <div v-for="(user,index) in Sort" :key="index">-->
+      <!--          <usercomp  @getflag="getflag" :id="index" :flag="user.flag" :photo="user.photo" :circleurl="user.circleurl" :name="user.username" :num="user.num" :information="user.info" :count="user.count"></usercomp>-->
+      <!--      </div>-->
     </div>
   </div>
 </template>
@@ -71,6 +71,7 @@ import vTop from "@/components/topselect";
 export default {
   name: "search",
   components: {
+    // eslint-disable-next-line vue/no-unused-components
     usercomp,
     vTop
   },
@@ -138,6 +139,7 @@ export default {
       this.$refs.searchval.value=this.$route.params.topsearch
       this.search()
     }
+
   },
   methods:{
     gotouser(e,i,t){
@@ -153,10 +155,12 @@ export default {
     // 接收页面跳转得参数
     getRouterData() {
       // 接收top栏参数
-      console.log("info："+this.$route.params.topsearch)
+      console.log("topinfo：")
+      console.log(this.$route.params.topsearch)
       this.$refs.searchval.value=this.$route.params.topsearch
       this.search()
       //接收home页参数  因为栏用1 2 3 4 标志所以必须和top分开避免相同
+      console.log("laninfo:");
       console.log( this.$route.params.homesearch)
     },
     getflag:function(id,flag){
@@ -353,20 +357,20 @@ export default {
       var tmp=localStorage.getItem("yhid")
       console.log(tmp)
       axios.post('/share?yhid='+tmp).then((response)=>{
-          console.log(response)
-          if(response){
-            var data=response.data;
-            console.log(data);
-            alert('查询成功');
-            _this.num=data
-            console.log(_this.num)
-          }
-          else{
-            alert('查询失败，请重试！')
-          }
-        }).catch(function (error) { // 请求失败处理
-          console.log("---查询出错---！"+error);
-        })
+        console.log(response)
+        if(response){
+          var data=response.data;
+          console.log(data);
+          alert('查询成功');
+          _this.num=data
+          console.log(_this.num)
+        }
+        else{
+          alert('查询失败，请重试！')
+        }
+      }).catch(function (error) { // 请求失败处理
+        console.log("---查询出错---！"+error);
+      })
       axios.post('/follow?zyhid='+tmp).then((response)=>{
         console.log(response)
         if(response){
