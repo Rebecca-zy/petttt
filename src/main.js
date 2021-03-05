@@ -20,6 +20,7 @@ axios.defaults.headers.post["Content-Type"] = "application/json;charset=UTF-8";
 axios.defaults.baseURL = "http://localhost:8000/";
 import VueResource from "vue-resource";
 import iView from "iview";
+import '@/assets/css/main.css'
 import "iview/dist/styles/iview.css";
 Vue.use(iView);
 Vue.use(BaiduMap, {
