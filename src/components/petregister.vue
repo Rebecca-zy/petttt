@@ -35,6 +35,12 @@ export default {
   components:{
         vTop
     },
+  activated:function(){
+    this.userinform.name="",
+    this.userinform.password="",
+    this.userinform.checkword="",
+    this.userinform.email=""
+  },
   data() {
     var checkname = (rule, value, callback) => {
       if (!value) {
@@ -79,11 +85,12 @@ export default {
       }
     };
     return {
+      dis:true,
       userinform: {
       //用户信息
       name:"",
-      password: "",
-      checkword: "",
+      password:"",
+      checkword:"",
       email:"",
     },
     rules: {
@@ -119,54 +126,59 @@ export default {
         })
     },
     submitForm(formName) {
-      const  _this = this
-      this.$refs[formName].validate((valid) => {
-        if (valid) {
-          axios.get('/user/registercheck',{
-            params:{
-              yhm:_this.userinform.name
-            }
-          }).then(res => {
-            //console.log(res.data)
-            if(res.data=="testusername"){
-              axios.get('/user/registeryxcheck',{
-                params:{
-                  yx:_this.userinform.name
-                }
-              }).then(re=>{
-                  console.log(re)
-                  if(re.data=="testmail"){
-                    console.log(re.data)
-                    alert('注册成功!');
-                    axios.post('/user/register',{
-                      username:_this.userinform.name,
-                      password:_this.userinform.password,
-                      yx:_this.userinform.email
-                    }).then(function(resp){
-                          console.log(resp)
-                        })
-                        this.$router.replace('/content')
-                      }
-                  else{
-                    alert('该邮箱已注册');
-                    return false;
+      if(this.dis==true){
+        this.dis=false
+        const  _this = this
+        this.$refs[formName].validate((valid) => {
+          if (valid) {
+            axios.get('/user/registercheck',{
+              params:{
+                yhm:_this.userinform.name
+              }
+            }).then(res => {
+              //console.log(res.data)
+              if(res.data=="testusername"){
+                axios.get('/user/registeryxcheck',{
+                  params:{
+                    yx:_this.userinform.name
                   }
-                })    
-            }
-            else{
-              alert('用户名已存在');
-              return false;
-            }
-          })
-          .catch(err => {
-              console.log('错误：'+err)
-          })
-        }
-        else {
-          console.log('信息错误，注册失败!');
-          return false;
-        }
-      });
+                }).then(re=>{
+                    console.log(re)
+                    if(re.data=="testmail"){
+                      console.log(re.data)
+                      alert('注册成功!');
+                      axios.post('/user/register',{
+                        username:_this.userinform.name,
+                        password:_this.userinform.password,
+                        yx:_this.userinform.email
+                      }).then(function(resp){
+                            console.log(resp)
+                            _this.dis=true
+                            _this.$router.replace('/content')
+
+                          })
+                        }
+                    else{
+                      alert('该邮箱已注册');
+                      return false;
+                    }
+                  })    
+              }
+              else{
+                alert('用户名已存在');
+                return false;
+              }
+            })
+            .catch(err => {
+                console.log('错误：'+err)
+            })
+          }
+          else {
+            console.log('信息错误，注册失败!');
+            return false;
+          }
+        });
+      }
     },
   }
 }

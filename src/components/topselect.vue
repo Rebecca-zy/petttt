@@ -16,6 +16,7 @@
         </div>
       </div>
       <img :src="userimg" @click="top_gotouser()" class="userimg" >
+      <p v-if="islogin==1" :class="[nowpage==5?'webitem1_a':'webitem1']" @click="top_outgoto('content',5)">注销</p>
       <p v-if="islogin==0" :class="[nowpage==5?'webitem1_a':'webitem1']" @click="top_goto('content',5)">登陆</p>
       <p  v-if="islogin==0" :class="[nowpage==6?'webitem1_a':'webitem1']" @click="top_goto('petregister',6)">注册</p>
     </div>
@@ -62,6 +63,11 @@ export default {
     },
     top_goto(e,t){
       localStorage.setItem("nowpage",t)
+      this.$router.push('/'+e);
+    },
+    top_outgoto(e,t){
+      localStorage.setItem("nowpage",t)
+      localStorage.removeItem("")
       this.$router.push('/'+e);
     },
     top_gotosearch(){
@@ -138,6 +144,7 @@ export default {
 }
 .userimg{
   height: 75px;
+  width:75px;
   border-radius: 50%;
 }
 </style>
