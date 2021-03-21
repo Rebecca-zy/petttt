@@ -243,7 +243,10 @@ export default {
                         }).then(res => {
                             console.log(res.data)
                             if(res.data=="success"){
-                                alert("关注成功")
+                                _this.$message({
+                                    duration: 2000,
+                                    message: '关注成功',
+                                });
                                 _this.guanzhu="已关注"
                             } 
                         })
@@ -261,7 +264,10 @@ export default {
                         }).then(res => {
                             console.log(res.data)
                             if(res.data=="success"){
-                                alert("关注成功")
+                                _this.$message({
+                                    duration: 2000,
+                                    message: '关注成功',
+                                    });
                                 _this.guanzhu="已关注"
                             } 
                         })
@@ -279,7 +285,10 @@ export default {
                         }).then(res => {
                             console.log(res.data)
                             if(res.data=="success"){
-                                alert("取消关注成功")
+                                _this.$message({
+                                duration: 2000,
+                                message: '取消关注成功',
+                                });
                                 _this.guanzhu="+关注"
                             } 
                         })
@@ -489,7 +498,7 @@ body {
     margin-left: 270px;
 }
 .loguserinfobox{
-    width: 300px;
+    width: 800px;
     height: 100px;
     display: flex;
     flex-direction: row;

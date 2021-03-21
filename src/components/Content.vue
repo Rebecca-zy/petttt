@@ -37,8 +37,14 @@ export default {
   components:{
         vTop
     },
+  activated:function(){
+    localStorage.setItem("nowpage",5)
+    this.user.input=""
+    this.user.password=""
+  },
   data() {
     return {
+      dis:true,
       user: {
         input: '',
         password: '',
@@ -58,36 +64,51 @@ export default {
     ...mapMutations(['changeLogin']),
     submitForm(user){
       let _this = this;
-      console.log(user);
-      // let tmp={
-      //   username:_this.user.input,
-      //   password:_this.user.password
-      // }
-      // tmp=JSON.stringify(tmp)
-      axios.post('/user/login',{
-        username:_this.user.input,
-        password:_this.user.password
-      }).then((response)=>{
-        console.log(response)
-        if(response.data.token){
-          var data=response.data;
-          console.log(data.yhid);
-          localStorage.setItem('yhid', JSON.stringify(data.yhid));
-          localStorage.setItem('yhm', JSON.stringify(data.yhm));
-          var tmp = 'Bearer ' + data.token;
-          // 将用户token保存到vuex中
-          _this.changeLogin({ token: tmp});
-          //localStorage.setItem('token',JSON.stringify(tmp))
-          _this.$router.push('/home');
-          alert('登陆成功');
-        }
-        else{
-          alert('登陆失败，请重试！')
-        }
-      }).catch(function (error) { // 请求失败处理
-        console.log("---出错---！");
-        console.log(error)
-      });
+      if(_this.dis==true)
+      {
+        _this.dis=false
+        console.log(user);
+        // let tmp={
+        //   username:_this.user.input,
+        //   password:_this.user.password
+        // }
+        // tmp=JSON.stringify(tmp)
+        axios.post('/user/login',{
+          username:_this.user.input,
+          password:_this.user.password
+        }).then((response)=>{
+          console.log(response)
+          if(response.data.token){
+            var data=response.data;
+            console.log(data.yhid);
+            localStorage.setItem('yhid', JSON.stringify(data.yhid));
+            localStorage.setItem('yhm', JSON.stringify(data.yhm));
+            var tmp = 'Bearer ' + data.token;
+            // 将用户token保存到vuex中
+            _this.changeLogin({ token: tmp});
+            //localStorage.setItem('token',JSON.stringify(tmp))
+            _this.$router.push('/home');
+            _this.$message({
+                duration: 2000,
+                message: '登录成功',
+            });
+            this.dis=true
+            localStorage.setItem("nowpage",1)
+            _this.input=""
+            _this.password=""
+          }
+          else{
+            _this.$message({
+                duration: 2000,
+                message: '登陆失败，请重试！',
+            });
+            this.dis=true
+          }
+        }).catch(function (error) { // 请求失败处理
+          console.log("---出错---！");
+          console.log(error)
+        });
+      }
 
     },
     clearForm(info){
@@ -98,6 +119,7 @@ export default {
     },
     gotoregister(){
       this.$router.push('/petregister');
+      localStorage.setItem("nowpage",6)
     },
     gotologin(){
       this.$router.push('/content');

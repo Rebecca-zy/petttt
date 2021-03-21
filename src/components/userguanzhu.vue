@@ -97,10 +97,13 @@
       <div class="bottom_rigthbox">
         <div class="bottom_rigthbox_header">关注列表</div>
         <div v-for="follow in follow" :key="follow.index" class="homeusercard"> 
-          <img :src="follow.tx" class="bottom_leftbox2_peturl" >
+          <img :src="follow.tx" @click="goto(follow.yhid,follow.yhm,follow.tx)" class="bottom_leftbox2_peturl" >
           <div class="homeusercardleft">
-            <div class="bottom_leftbox2_info_hang_item">{{follow.yhm}}</div>
-            <div class="bottom_leftbox2_info_hang_item">{{follow.gxqm}}</div>
+            <div style="display:flex;flex-direction:row">
+              <div @click="goto(follow.yhid,follow.yhm,follow.tx)" class="bottom_leftbox2_info_hang_item">{{follow.yhm}}</div>
+              <button style="margin-left:30px;border:#e4e2e2" @click="guanzhu(follow.yhid)">取消关注</button>
+            </div>
+            <div @click="goto(follow.yhid,follow.yhm,follow.tx)" class="bottom_leftbox2_info_hang_item">{{follow.gxqm}}</div>
           </div>
         </div>
       </div>
@@ -227,6 +230,100 @@ export default {
         this.$router.push({
                 name: 'content',
             })
+    },
+     guanzhu(e) {
+      const _this=this
+      if(localStorage.getItem("yhid")){
+        axios.get('/isfollow',{//查成功
+          params:{
+            zyhid:e,
+            fsid:localStorage.getItem("yhid"),
+          }
+        }).then(res => {
+          console.log(res.data)
+          if(res.data=="wu"){
+            axios.get('/addfollow',{
+              params:{
+                zyhid:e,
+                fsid:localStorage.getItem("yhid"),
+                qxgz:0
+              }
+            }).then(res => {
+              console.log(res.data)
+              if(res.data=="success"){
+                _this.$message({
+                duration: 2000,
+                message: '关注成功',
+            });
+                _this.user_guanzhu="已关注"
+              } 
+            })
+            .catch(err => {
+              console.log('首关注环节错误：'+err)//
+            })
+          } 
+          else if(res.data=="1"){
+            axios.get('/upfollow',{
+            params:{
+              zyhid:e,
+              fsid:localStorage.getItem("yhid"),
+              qxgz:0
+            }
+          }).then(res => {
+            console.log(res.data)
+            if(res.data=="success"){
+              _this.$message({
+                duration: 2000,
+                message: '关注成功',
+            });
+            _this.user_guanzhu="已关注"
+          } 
+        })
+        .catch(err => {
+          console.log('再关注环节错误：'+err)//
+        })
+          }
+          else{
+            axios.get('/upfollow',{
+              params:{
+                zyhid:_this.user_id,
+                fsid:localStorage.getItem("yhid"),
+                qxgz:1
+              }
+            }).then(res => {
+              console.log(res.data)
+              if(res.data=="success"){
+                _this.$message({
+                duration: 2000,
+                message: '取消关注成功',
+            });
+                _this.user_guanzhu="+关注"
+              } 
+            })
+            .catch(err => {
+              console.log('取关错误：'+err)
+            })
+          }
+        })
+        .catch(err => {
+          console.log('查错误：'+err)
+        })
+      }
+      else{
+        this.$router.push({
+          name: 'content',
+        })
+      }
+    },
+    goto(e,i,t){
+      this.$router.push({
+        name: 'otheruser',
+          params: {
+            yhid:e,
+            yhm: i,
+            tx:t
+          }
+        })
     }
   }
 }
@@ -254,7 +351,7 @@ body {
 }
 .header_userinfobox{
   height: 200px;
-  width: 400px;
+  width: 800px;
   margin-left: 29px;
   display: flex;
   flex-direction: column;
@@ -357,8 +454,11 @@ body {
   display: flex;
   flex-direction: column;
   width: 380px;
-  height: 800px;
+  height: 700px;
   overflow:auto
+}
+.bottom_leftbox::-webkit-scrollbar{
+    display: none;
 }
 .bottom_leftbox1{
   width: 380px;
@@ -441,8 +541,11 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
+}
+.bottom_rigthbox::-webkit-scrollbar{
+    display: none;
 }
 .homeusercard{
     width: 792px;

@@ -97,10 +97,10 @@
       <div class="bottom_rigthbox">
         <div class="bottom_rigthbox_header">关注列表</div>
         <div v-for="follow in follow" :key="follow.index" class="homeusercard"> 
-          <img :src="follow.tx" class="bottom_leftbox2_peturl" >
+          <img :src="follow.tx" @click="goto(follow.yhid,follow.yhm,follow.tx)" class="bottom_leftbox2_peturl" >
           <div class="homeusercardleft">
-            <div class="bottom_leftbox2_info_hang_item">{{follow.yhm}}</div>
-            <div class="bottom_leftbox2_info_hang_item">{{follow.gxqm}}</div>
+            <div class="bottom_leftbox2_info_hang_item" @click="goto(follow.yhid,follow.yhm,follow.tx)">{{follow.yhm}}</div>
+            <div class="bottom_leftbox2_info_hang_item"  @click="goto(follow.yhid,follow.yhm,follow.tx)">{{follow.gxqm}}</div>
           </div>
         </div>
       </div>
@@ -227,6 +227,16 @@ export default {
         this.$router.push({
                 name: 'content',
             })
+    },
+    goto(e,i,t){
+      this.$router.push({
+        name: 'otheruser',
+          params: {
+            yhid:e,
+            yhm: i,
+            tx:t
+          }
+        })
     }
   }
 }
@@ -254,7 +264,7 @@ body {
 }
 .header_userinfobox{
   height: 200px;
-  width: 400px;
+  width: 800px;
   margin-left: 29px;
   display: flex;
   flex-direction: column;
@@ -357,9 +367,13 @@ body {
   display: flex;
   flex-direction: column;
   width: 380px;
-  height: 800px;
+  height: 700px;
   overflow:auto
 }
+.bottom_leftbox::-webkit-scrollbar{
+    display: none;
+}
+ 
 .bottom_leftbox1{
   width: 380px;
   height: 110px;
@@ -441,8 +455,11 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
+}
+.bottom_rigthbox::-webkit-scrollbar{
+    display: none;
 }
 .homeusercard{
     width: 792px;

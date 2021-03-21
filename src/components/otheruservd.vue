@@ -296,7 +296,10 @@ export default {
             }).then(res => {
               console.log(res.data)
               if(res.data=="success"){
-                alert("关注成功")
+                _this.$message({
+                  duration: 2000,
+                  message: '关注成功',
+                });
                 _this.user_guanzhu="已关注"
               } 
             })
@@ -314,7 +317,10 @@ export default {
           }).then(res => {
             console.log(res.data)
             if(res.data=="success"){
-              alert("关注成功")
+              _this.$message({
+                duration: 2000,
+                message: '关注成功',
+              });
             _this.user_guanzhu="已关注"
           } 
         })
@@ -332,7 +338,10 @@ export default {
             }).then(res => {
               console.log(res.data)
               if(res.data=="success"){
-                alert("取消关注成功")
+                _this.$message({
+                  duration: 2000,
+                  message: '取消关注成功',
+                });
                 _this.user_guanzhu="+关注"
               } 
             })
@@ -376,6 +385,13 @@ export default {
 </script>
 
 <style scoped>
+.select1{
+  border-radius: 20px;
+  height: 47px;
+  width: 130px;
+  background-color: #FDF0E3;
+  border-color: #FDF0e3;
+}
 body {
   margin: 0;
 }
@@ -396,7 +412,7 @@ body {
 }
 .header_userinfobox{
   height: 200px;
-  width: 400px;
+  width: 800px;
   margin-left: 29px;
   display: flex;
   flex-direction: column;
@@ -476,6 +492,8 @@ body {
   display: flex;
   flex-direction: column;
   width: 380px;
+   height: 700px;
+  overflow: auto;
 }
 .bottom_leftbox1{
   width: 380px;
@@ -558,8 +576,11 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
+}
+.bottom_rigthbox::-webkit-scrollbar{
+    display: none;
 }
 .bottom_rigthboxinner{
   width: 792px;

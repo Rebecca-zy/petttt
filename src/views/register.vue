@@ -219,7 +219,10 @@ export default {
       submitForm(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            alert('submit!');
+            _this.$message({
+                duration: 2000,
+                message: '提交成功！',
+          });
           } else {
             console.log('error submit!!');
             return false;

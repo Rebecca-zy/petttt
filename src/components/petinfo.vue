@@ -214,7 +214,10 @@ export default {
         console.log("下标："+this.seq)
       }
       else if(this.seq==0){
-        alert("已经是第一个宠物！")
+        _this.$message({
+                duration: 2000,
+                message: '已经是第一个宠物！',
+        });
         console.log("下标0")
       }
     },
@@ -735,8 +738,11 @@ body {
   display: flex;
   flex-direction: column;
   width: 380px;
-  height: 800px;
+  height: 700px;
   overflow: auto;
+}
+.bottom_leftbox::-webkit-scrollbar{
+    display: none;
 }
 .bottom_leftbox1{
   width: 380px;
@@ -819,8 +825,11 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
+}
+.bottom_rigthbox::-webkit-scrollbar{
+    display: none;
 }
 .bottom_rigthbox_header{
   width: 792px;

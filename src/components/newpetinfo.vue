@@ -241,7 +241,10 @@ export default {
         console.log("下标："+this.seq)
       }
       else if(this.seq==0){
-        alert("已经是第一个宠物！")
+        _this.$message({
+                duration: 2000,
+                message: '已经是第一个宠物！',
+        });
         console.log("下标0")
       }
     },
@@ -274,7 +277,10 @@ export default {
           .then(res=>{
             console.log("yesok")
             console.log(res)
-            alert("新建宠物成功！")
+            _this.$message({
+                duration: 2000,
+                message: '新建宠物成功！',
+          });
             this.$router.push("/petinfo")
           })
           .catch(err=>{
@@ -849,7 +855,7 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
 }
 .bottom_rigthbox_header{

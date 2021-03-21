@@ -8,9 +8,17 @@
         <!-- logo栏 -->
         <div class="homelogos">
             <!-- 分栏 -->
-            <img @click="home_goto('pethome')" class="homelogo1" :src="logo1" >
-            <img @click="home_goto('knowledgecard')" class="homelogo23" :src="logo2">
-            <img @click="home_goto('hospital')" class="homelogo23" :src="logo3">
+            <img @click="home_goto('pethome',2)" class="homelogo1" :src="logo1" >
+            <el-popover  class="homelogo23" 
+                placement="bottom"
+                min-width="150"
+                trigger="click">
+                <img :src="wxUrl" class="wximg">
+                <span slot="reference">
+                    <img :src="logo2">
+                </span>
+            </el-popover> 
+            <img @click="home_goto('hospital',4)" class="homelogo23" :src="logo3">
             <!-- 分区 -->
             <div class="homelans">
                 <img @click="home_gotosearch('1')" class="homelan1" :src="lan1"> <!-- 萌宠日常 -->
@@ -27,25 +35,11 @@
                         <span @click="home_gotosearch(lan)">{{lan}}</span>
                     </div>
                 </div>
-                <div class="homefenqus1">
-                    <div  v-for="lan in lans2" :key="lan.key">
+                <div class="homefenqus2">
+                    <div style="margin-right:22px" v-for="lan in lans2" :key="lan.key">
                         <span @click="home_gotosearch(lan)">{{lan}}</span>
                     </div>
-                    <el-popover
-                        placement="bottom"
-                        min-width="150"
-                        trigger="click">
-                        <div class="homefenqus2_col">
-                            <div v-for="(lan3,index) in lans3" :key="lan3.key">
-                                <div class="homefenqu2_row">
-                                    <div  v-for="lan in lans3[index]" :key="lan.key">
-                                        <div class="fenqu2lan" @click="home_gotosearch(lan)">{{lan}}</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <span slot="reference">更多</span>
-                    </el-popover>
+                    <span style="margin-right:22px" @click="home_goto('search')">更多</span>
                 </div>
             </div>
             <img @click="home_goto('medicalcard')" class="book" :src="book">
@@ -55,14 +49,14 @@
                 <!-- 轮播 --> 
                 <div class="homepicsbox">
                     <el-carousel :interval="4000" type="card" arrow="hover" height="250px" autoplay="autoplay" ref="carousel">
-                    <el-carousel-item v-for="lunbo in lunbolist" :key="lunbo">
-                        <img :src="lunbo">
+                    <el-carousel-item class="carousel-item" v-for="lunbo in lunbolist" :key="lunbo">
+                        <img class="carousel-img" :src="lunbo">
                     </el-carousel-item>
                     </el-carousel>
                 </div>
                 <!-- 推荐 -->
                 <div class="hometuijianbox">
-                    <div class="tuijiantitlebox">
+                    <div  class="tuijiantitlebox">
                         <img class="title1" :src="title1">
                         <img @click="change()" class="title15" :src="title15">
                     </div>
@@ -146,6 +140,7 @@ export default {
     },
     data(){
         return{
+            wxUrl:require("@/assets/img/img1.png"),
             longpets:require("@/assets/img/longpets.png"),
             logo1:require("@/assets/img/home_logo_liulang.png"),
             logo2:require("@/assets/img/home_logo_kepu.png"),
@@ -160,21 +155,12 @@ export default {
             title15:require("@/assets/img/home_title_huan.png"),
             star:require("@/assets/img/star.png"),
             love:require("@/assets/img/love.png"),
-            lans1:['猫咪','兔子','狗狗','仓鼠','乌龟'],
-            lans2:['鱼类','鸟类','昆虫','爬宠'],
-            lans3:[
-                ['猫咪','兔子','狗狗','仓鼠','乌龟'],
-                ['猫咪','兔子','狗狗','仓鼠','乌龟'],
-                ['猫咪','兔子','狗狗','仓鼠','乌龟'],
-                ['猫咪','兔子','狗狗','仓鼠','乌龟'],
-                ['猫咪','兔子','狗狗','仓鼠','乌龟'],
-                ['猫咪','兔子'],
-            ],
+            lans1:["猫咪","狗狗","乌龟","仓鼠","兔子"],
+            lans2:["鸟类"],
             lunbolist:[
-                'https://fuss10.elemecdn.com/e/5d/4a731a90594a4af544c0c25941171jpeg.jpeg',
-                'https://fuss10.elemecdn.com/8/27/f01c15bb73e1ef3793e64e6b7bbccjpeg.jpeg',
-                'https://fuss10.elemecdn.com/1/8e/aeffeb4de74e2fde4bd74fc7b4486jpeg.jpeg',
-                'https://fuss10.elemecdn.com/a/3f/3302e58f9a181d2509f3dc0fa68b0jpeg.jpeg',
+                require("@/assets/img/swiper1.jpg"),
+                require("@/assets/img/swiper2.jpg"),
+                require("@/assets/img/swiper3.jpg"),
             ],
             hotlist:[
                 {
@@ -311,9 +297,41 @@ export default {
     activated:function(){
         this.gethot()
         this.change() 
+        // this.getallpet()
+        localStorage.setItem("nowpage",1)
     },
     methods:{
-        // 先反id then里面赋值
+        // getallpet(){
+        //     const _this=this
+        //     axios.post('/allpet')
+        //     .then(res => { 
+        //         console.log(res.data)  
+        //         console.log(res.data.length)
+        //         if(res.data.length<=6){
+        //             var j=0
+        //             var i
+        //             for(i=1;i<res.data.length;i++){
+        //                 _this.lans1[j]=res.data[i]
+        //                 j++; 
+        //             }
+        //         } 
+        //         else{
+        //             var j=0
+        //             var i
+        //             for(i=1;i<res.data.length;i++){
+        //                 _this.lans1[j]=res.data[i]
+        //                 j++
+        //             }
+        //             j=0
+        //             for(i=7;i<res.data.length;i++){
+        //                 _this.lans2[j]=res.data[i]
+        //                 j++
+        //             }
+        //         }       
+        //     }).catch(err => {
+        //         console.log('错误！！！！：'+err)
+        //     })
+        // },
         change(){
             this.gettuijianvd();
             this.gettuijianpt();
@@ -322,7 +340,6 @@ export default {
         },
         writelocal(temp){
             if(!window.localStorage){
-                alert("浏览器支持localstorage");
                 return false;
             }else{
                 var localstorage=window.localStorage;
@@ -337,7 +354,6 @@ export default {
         },
         writelocal2(temp){
             if(!window.localStorage){
-                alert("浏览器支持localstorage");
                 return false;
             }else{
                 var localstorage=window.localStorage;
@@ -345,6 +361,7 @@ export default {
             }
         }, 
         gethot(){
+            localStorage.setItem("nowpage",0)
             let _this=this
             axios.get('/gethotshare',{        
             }).then(async res => {
@@ -911,10 +928,15 @@ export default {
                 })
             }
         },
-        home_goto(e){
+        home_goto(e,t){
+            if(t)
+                localStorage.setItem("nowpage",t)
+            else
+                localStorage.setItem("nowpage",0)
             this.$router.push('/'+e);
         },
         home_gotosearch(e){
+            localStorage.setItem("nowpage",0)
             // console.log(e),
             this.$router.push({
                 name: 'lan',
@@ -924,6 +946,7 @@ export default {
             })
         },
         home_gotolog(e){
+            localStorage.setItem("nowpage",0)
             const _this=this
             axios.get('/ishavephoto',{
                 params:{
@@ -952,6 +975,7 @@ export default {
             })
         },
         home_gotouser(e,i,t){
+            localStorage.setItem("nowpage",0)
             this.$router.push({
                 name: 'otheruser',
                     params: {
@@ -966,6 +990,22 @@ export default {
 </script>
 
 <style scoped>
+.wximg{
+  width: 250px;
+  height: 250px;
+  padding: 10px;
+}
+.carousel-item {
+    width: 100%;
+    height: 100%;
+    /* background: white; */
+    /* display: flex;
+    justify-content: center; */
+}
+.carousel-img {
+    max-width: 100%;
+    max-height: 100%;
+}
 body {
     margin: 0;
 }
@@ -1023,6 +1063,13 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+}
+.homefenqus2{
+    width: 300px;
+    height: 24px;
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
 }
 .homefenqus2_col{
     min-width: 250px;

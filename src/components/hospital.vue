@@ -100,6 +100,9 @@ export default {
       tmp:''
     }
   },
+  activated:function(){
+    localStorage.setItem("nowpage",4)
+  },
   methods: {
     rad(d){
       return d * Math.PI / 180.0;

@@ -457,8 +457,9 @@ export default {
       const _this=this
       axios.post('/petinfolistbyyhid?yhid='+e)
       .then((response)=>{
-        console.log(response)
+        console.log(response.data)
         this.pets=response.data
+        
       }).catch(function (error) { // 请求失败处理
         console.log("---查询出错---！"+error);
       })
@@ -671,7 +672,7 @@ body {
 }
 .header_userinfobox{
   height: 200px;
-  width: 400px;
+  width: 800px;
   margin-left: 29px;
   display: flex;
   flex-direction: column;
@@ -774,9 +775,14 @@ body {
   display: flex;
   flex-direction: column;
   width: 380px;
-  height: 800px;
+  height: 700px;
   overflow: auto;
 }
+.bottom_leftbox::-webkit-scrollbar{
+    display: none;
+}
+
+ 
 .bottom_leftbox1{
   width: 380px;
   height: 110px;
@@ -843,7 +849,6 @@ body {
   width: 348px;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
   margin-top: 15px;
   
 }
@@ -879,9 +884,14 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
 }
+.bottom_rigthbox::-webkit-scrollbar{
+    display: none;
+}
+
+ 
 .bottom_rigthbox_header{
   width: 792px;
   min-height: 150px;
@@ -1034,7 +1044,7 @@ body {
     margin-bottom: 5px;
 }
 .loguserinfobox{
-    width: 300px;
+    width: 700px;
     height: 70px;
     display: flex;
     flex-direction: row;

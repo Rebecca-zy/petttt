@@ -66,12 +66,18 @@ export default {
         this.iconData = 'el-icon-star-on';
         this.msg="已关注";
         this.flag=false;
-        alert("关注成功！");
+        _this.$message({
+                duration: 2000,
+                message: '关注成功',
+            });
       }else{
         this.iconData = 'el-icon-star-off';
         this.flag=true;
         this.msg="点击关注";
-        alert("取消关注成功！");
+        _this.$message({
+                duration: 2000,
+                message: '取消关注成功',
+            });
       }
       this.$emit("getflag", this.flag,this.back);
       console.log(this.flag,this.id);

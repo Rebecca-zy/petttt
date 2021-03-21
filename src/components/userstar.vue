@@ -468,7 +468,7 @@ body {
 }
 .header_userinfobox{
   height: 200px;
-  width: 400px;
+  width: 800px;
   margin-left: 29px;
   display: flex;
   flex-direction: column;
@@ -572,8 +572,11 @@ body {
   display: flex;
   flex-direction: column;
   width: 380px;
-  height: 800px;
+  height: 700px;
   overflow: auto;
+}
+.bottom_leftbox::-webkit-scrollbar{
+    display: none;
 }
 .bottom_leftbox1{
   width: 380px;
@@ -656,8 +659,11 @@ body {
 .bottom_rigthbox{
   margin-left: 22px;
   width: 792px;
-  height: 800px;
+  height: 700px;
   overflow:auto
+}
+.bottom_rigthbox::-webkit-scrollbar{
+    display: none;
 }
 .bottom_rigthbox_header{
     width: 792px;
@@ -704,7 +710,7 @@ body {
 
 }
 .loguserinfobox{
-    width: 300px;
+    width: 700px;
     height: 70px;
     display: flex;
     flex-direction: row;

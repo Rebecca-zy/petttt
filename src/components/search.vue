@@ -169,7 +169,10 @@ export default {
     getinfo:function (label){
       console.log(label);
       this.section=label;
-      alert(this.section);
+      _this.$message({
+          duration: 2000,
+          message: this.section,
+      });
     },
     gotolan(){
       this.$router.push('/lan');
@@ -242,7 +245,10 @@ export default {
                       this.users[i].count=data
                     }
                     else{
-                      alert('查询失败，请重试！')
+                       _this.$message({
+                          duration: 2000,
+                          message: '查询失败，请重试!',
+                      });
                     }
                     axios.post('/follow?zyhid='+tmp).then((response)=>{
                       console.log(response)
@@ -361,12 +367,19 @@ export default {
         if(response){
           var data=response.data;
           console.log(data);
-          alert('查询成功');
+           _this.$message({
+                duration: 2000,
+                message: '查询成功',
+            });
           _this.num=data
           console.log(_this.num)
         }
         else{
-          alert('查询失败，请重试！')
+          _this.$message({
+                duration: 2000,
+                message: '查询失败，请重试！',
+          });
+          
         }
       }).catch(function (error) { // 请求失败处理
         console.log("---查询出错---！"+error);
@@ -376,12 +389,18 @@ export default {
         if(response){
           var data=response.data;
           console.log(data);
-          alert('查询成功');
+          _this.$message({
+                duration: 2000,
+                message: '查询成功',
+            });
           _this.fans=data
           console.log(_this.fans)
         }
         else{
-          alert('查询失败，请重试！')
+          _this.$message({
+                duration: 2000,
+                message: '查询失败，请重试！',
+            });
         }
       }).catch(function (error) { // 请求失败处理
         console.log("---查询出错---！"+error);
@@ -517,12 +536,13 @@ body {
   margin-left: 5%;
 }
 .s-search-text{
+  font-size:18px;
   flex: 0 0 373px;
   flex-shrink: 0;
   margin-top: 1.5%;
   width: 373px;
   height: 41px;
-  background: #B6B6B6;
+  background: #e4e2e2;
   opacity: 0.3;
   box-sizing: border-box;
 }
@@ -572,7 +592,7 @@ body {
   width: 768px;
   height: 2px;
   opacity: 0.55;
-  background: #000000;
+  background:#e4e2e2;
   position: absolute;
   left: 24%;
 }
@@ -673,11 +693,11 @@ body {
 
 
 .usersimg{
-  width: 150px;
-  height: 150px;
+  width: 100px;
+  height: 100px;
   background: #FACD89;
   border-radius: 50%;
-  margin-left:10% ;
+  margin-left:15% ;
 }
 .name{
   width: 105px;

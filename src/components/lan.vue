@@ -37,10 +37,13 @@
         <button @click="diyClass" class="btngroup2">DIY课堂</button>
       </div>
       <div>
-        <button class="btngroup3" @click="dog">狗狗</button>
-        <button class="btngroup3" @click="cat">猫咪</button>
-        <button class="btngroup3" @click="rabbit">兔子</button>
-        <button class="btngroup3" @click="mouse">仓鼠</button>
+        <button class="btngroup3" @click="animalsearch('猫咪')">猫咪</button>
+        <button class="btngroup3" @click="animalsearch('狗狗')">狗狗</button>
+        <button class="btngroup3" @click="animalsearch('乌龟')">乌龟</button>
+        <button class="btngroup3" @click="animalsearch('仓鼠')">仓鼠</button>
+         <button class="btngroup3" @click="animalsearch('兔子')">兔子</button>
+        <button class="btngroup3" @click="animalsearch('鸟类')">鸟类</button>
+
       </div>
     </div>
     <div class="bottom">
@@ -247,18 +250,8 @@ export default {
       else if(tmp=='4'){
         this.diyClass();
       }
-
-      if(tmp=='兔子'){
-        this.rabbit()
-      }
-      else if(tmp=='猫咪'){
-        this.cat();
-      }
-      else if(tmp=='仓鼠'){
-        this.mouse()
-      }
-      else if(tmp=='狗狗'){
-        this.dog()
+      else{
+        this.animalsearch(tmp)
       }
 
     }
@@ -794,19 +787,19 @@ export default {
       }
       // this.$forceUpdate();
     },
-    dog(){
+    animalsearch(temp){
       let searchText = this.$refs.searchval.value
       console.log(searchText)
       // if (searchText =='') {
       //   return
       // }
       // else
-      {
+      // {
         this.showflag=true
         axios.post('/animalsearch',
             {
-              wz: searchText,
-              zl:"狗狗"
+              wz:searchText,
+              zl:temp
             })
             .then((res) => {
               console.log(res.data)
@@ -872,6 +865,9 @@ export default {
                                     //console.log(res.data)
                                     _this.messageinform[i].starnumber=res.data;
                                   })
+                              if(localStorage.getItem('yhid'))
+                                this.messageinform[i].msg="+关注"
+                              else
                               axios.get('/isfollow',{//查成功
                                 params:{
                                   zyhid:localStorage.getItem('yhid'),
@@ -903,341 +899,452 @@ export default {
               }
 
             })
-      }
-    },
-    cat(){
-      let searchText = this.$refs.searchval.value
-      console.log(searchText)
-      // if (searchText =='') {
-      //   return
       // }
-      // else
-      {
-        this.showflag=true
-        axios.post('/animalsearch',
-            {
-              wz: searchText,
-              zl:"猫咪"
-            })
-            .then((res) => {
-              console.log(res.data)
-              var len=res.data.shareinfo.length
-              if(len>this.length){
-                this.length=3
-              }else{
-                this.length=len
-              }
-              if (res.status == 200) {
-                //this.$emit用于向父组件传值
-                // console.log(res.data);
-                for (let i=0; i<len; i++){
-                  this.useridtmp[i]=res.data.shareinfo[i].yhid;
-                  this.recordid[i]=res.data.shareinfo[i].jlid;
-                  let tmp=this.recordid[i];
-                  const _this = this
-                  axios.get('/getShareByjlid',{
-                    params:{
-                      jlid:tmp
-                    }
-                  })
-                      .then(res => {
-                        _this.messageinform[i].show=true
-                        _this.messageinform[i].messagenum=res.data.jlid
-                        _this.messageinform[i].username=res.data.yhm
-                        _this.messageinform[i].datatime=res.data.fbsj
-                        _this.messageinform[i].passage=res.data.wz
-                        axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
-                          if(response){
-                            var data=response.data;
-                            this.messageinform[i].fans=data
-                          }
-                        }).catch(function (error) { // 请求失败处理
-                          console.log("---查询出错---！"+error);
-                        })
-                        axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
-                            .then(r=>{
-                              _this.messageinform[i].userUrl=r.data.tx;
-                            }).catch(err => {
-                          console.log('错误！！！！：'+err)
-                        })
-                        axios.get('/getPhotoByjlid',{
-                          params:{
-                            jlid:tmp
-                          }
-                        })
-                            .then(res => {
-                              _this.ph=res.data
-                              var j=0
-                              for(j=0;j<_this.ph.length;j++){
-                                _this.messageinform[i].photourl[j]=_this.ph[j].zp
-                              }
-                              _this.messageinform[i].photolen=_this.ph.length
-                              console.log("photolen:"+ _this.messageinform[i].photolen)
-                              axios.post('/likecount?jlid='+tmp)
-                                  .then(res=>{
-                                    //console.log(res.data)
-                                    _this.messageinform[i].lovenumber=res.data;
-                                  })
-                              axios.post('/starcount?jlid='+tmp)
-                                  .then(res=>{
-                                    //console.log(res.data)
-                                    _this.messageinform[i].starnumber=res.data;
-                                  })
-                              axios.get('/isfollow',{//查成功
-                                params:{
-                                  zyhid:localStorage.getItem('yhid'),
-                                  fsid:tmp
-                                }
-                              })
-                                  .then(res => {
-                                    // console.log(res.data)
-                                    if(res.data=="wu"){
-                                      this.messageinform[i].flag=false;
-                                      this.messageinform[i].msg="+关注"
-                                    }
-                                    else if(res.data=="1"){
-                                      this.messageinform[i].flag=false;
-                                      this.messageinform[i].msg="+关注"
-                                    }
-                                    else{
-                                      this.messageinform[i].flag=true;
-                                      this.messageinform[i].msg="已关注"
-                                    }
-                                  })
-                            })
-                      })
-                      .catch(err => {
-                        console.log('错误：'+err)
-                      })
-
-                }
-              }
-
-            })
-      }
     },
-    rabbit(){
-      let searchText = this.$refs.searchval.value
-      // console.log(searchText)
-      // if (searchText =='') {
-      //   return
-      // }
-      // else
-      {
-        this.showflag=true
-        axios.post('/animalsearch',
-            {
-              wz: searchText,
-              zl:"兔子"
-            })
-            .then((res) => {
-              console.log(res.data)
-              var len=res.data.shareinfo.length
-              if(len>this.length){
-                this.length=3
-              }else{
-                this.length=len
-              }
-              if (res.status == 200) {
-                //this.$emit用于向父组件传值
-                // console.log(res.data);
-                for (let i=0; i<len; i++){
-                  this.useridtmp[i]=res.data.shareinfo[i].yhid;
-                  this.recordid[i]=res.data.shareinfo[i].jlid;
-                  let tmp=this.recordid[i];
-                  const _this = this
-                  axios.get('/getShareByjlid',{
-                    params:{
-                      jlid:tmp
-                    }
-                  })
-                      .then(res => {
-                        _this.messageinform[i].show=true
-                        _this.messageinform[i].messagenum=res.data.jlid
-                        _this.messageinform[i].username=res.data.yhm
-                        _this.messageinform[i].datatime=res.data.fbsj
-                        _this.messageinform[i].passage=res.data.wz
-                        axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
-                          if(response){
-                            var data=response.data;
-                            this.messageinform[i].fans=data
-                          }
-                        }).catch(function (error) { // 请求失败处理
-                          console.log("---查询出错---！"+error);
-                        })
-                        axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
-                            .then(r=>{
-                              _this.messageinform[i].userUrl=r.data.tx;
-                            }).catch(err => {
-                          console.log('错误！！！！：'+err)
-                        })
-                        axios.get('/getPhotoByjlid',{
-                          params:{
-                            jlid:tmp
-                          }
-                        })
-                            .then(res => {
-                              _this.ph=res.data
-                              var j=0
-                              for(j=0;j<_this.ph.length;j++){
-                                _this.messageinform[i].photourl[j]=_this.ph[j].zp
-                              }
-                              _this.messageinform[i].photolen=_this.ph.length
-                              console.log("photolen:"+ _this.messageinform[i].photolen)
-                              axios.post('/likecount?jlid='+tmp)
-                                  .then(res=>{
-                                    //console.log(res.data)
-                                    _this.messageinform[i].lovenumber=res.data;
-                                  })
-                              axios.post('/starcount?jlid='+tmp)
-                                  .then(res=>{
-                                    //console.log(res.data)
-                                    _this.messageinform[i].starnumber=res.data;
-                                  })
-                              axios.get('/isfollow',{//查成功
-                                params:{
-                                  zyhid:localStorage.getItem('yhid'),
-                                  fsid:tmp
-                                }
-                              })
-                                  .then(res => {
-                                    // console.log(res.data)
-                                    if(res.data=="wu"){
-                                      this.messageinform[i].flag=false;
-                                      this.messageinform[i].msg="+关注"
-                                    }
-                                    else if(res.data=="1"){
-                                      this.messageinform[i].flag=false;
-                                      this.messageinform[i].msg="+关注"
-                                    }
-                                    else{
-                                      this.messageinform[i].flag=true;
-                                      this.messageinform[i].msg="已关注"
-                                    }
-                                  })
-                            })
-                      })
-                      .catch(err => {
-                        console.log('错误：'+err)
-                      })
+    // wugui(){
+    //   let searchText = this.$refs.searchval.value
+    //   console.log(searchText)
+    //   // if (searchText =='') {
+    //   //   return
+    //   // }
+    //   // else
+    //   {
+    //     this.showflag=true
+    //     axios.post('/animalsearch',
+    //         {
+    //           wz: searchText,
+    //           zl:"乌龟"
+    //         })
+    //         .then((res) => {
+    //           console.log(res.data)
+    //           var len=res.data.shareinfo.length
+    //           if(len>this.length){
+    //             this.length=3
+    //           }else{
+    //             this.length=len
+    //           }
+    //           if (res.status == 200) {
+    //             //this.$emit用于向父组件传值
+    //             // console.log(res.data);
+    //             for (let i=0; i<len; i++){
+    //               this.useridtmp[i]=res.data.shareinfo[i].yhid;
+    //               this.recordid[i]=res.data.shareinfo[i].jlid;
+    //               let tmp=this.recordid[i];
+    //               const _this = this
+    //               axios.get('/getShareByjlid',{
+    //                 params:{
+    //                   jlid:tmp
+    //                 }
+    //               })
+    //                   .then(res => {
+    //                     _this.messageinform[i].show=true
+    //                     _this.messageinform[i].messagenum=res.data.jlid
+    //                     _this.messageinform[i].username=res.data.yhm
+    //                     _this.messageinform[i].datatime=res.data.fbsj
+    //                     _this.messageinform[i].passage=res.data.wz
+    //                     axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
+    //                       if(response){
+    //                         var data=response.data;
+    //                         this.messageinform[i].fans=data
+    //                       }
+    //                     }).catch(function (error) { // 请求失败处理
+    //                       console.log("---查询出错---！"+error);
+    //                     })
+    //                     axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
+    //                         .then(r=>{
+    //                           _this.messageinform[i].userUrl=r.data.tx;
+    //                         }).catch(err => {
+    //                       console.log('错误！！！！：'+err)
+    //                     })
+    //                     axios.get('/getPhotoByjlid',{
+    //                       params:{
+    //                         jlid:tmp
+    //                       }
+    //                     })
+    //                         .then(res => {
+    //                           _this.ph=res.data
+    //                           var j=0
+    //                           for(j=0;j<_this.ph.length;j++){
+    //                             _this.messageinform[i].photourl[j]=_this.ph[j].zp
+    //                           }
+    //                           _this.messageinform[i].photolen=_this.ph.length
+    //                           console.log("photolen:"+ _this.messageinform[i].photolen)
+    //                           axios.post('/likecount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].lovenumber=res.data;
+    //                               })
+    //                           axios.post('/starcount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].starnumber=res.data;
+    //                               })
+    //                           axios.get('/isfollow',{//查成功
+    //                             params:{
+    //                               zyhid:localStorage.getItem('yhid'),
+    //                               fsid:tmp
+    //                             }
+    //                           })
+    //                               .then(res => {
+    //                                 // console.log(res.data)
+    //                                 if(res.data=="wu"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else if(res.data=="1"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else{
+    //                                   this.messageinform[i].flag=true;
+    //                                   this.messageinform[i].msg="已关注"
+    //                                 }
+    //                               })
+    //                         })
+    //                   })
+    //                   .catch(err => {
+    //                     console.log('错误：'+err)
+    //                   })
 
-                }
-              }
+    //             }
+    //           }
 
-            })
-      }
-    },
-    mouse(){
-      let searchText = this.$refs.searchval.value
-      // console.log(searchText)
-      // if (searchText =='') {
-      //   return
-      // }
-      // else
-      {
-        this.showflag=true
-        axios.post('/animalsearch',
-            {
-              wz: searchText,
-              zl:"仓鼠"
-            })
-            .then((res) => {
-              console.log(res.data)
-              var len=res.data.shareinfo.length
-              if(len>this.length){
-                this.length=3
-              }else{
-                this.length=len
-              }
-              if (res.status == 200) {
-                //this.$emit用于向父组件传值
-                // console.log(res.data);
-                for (let i=0; i<len; i++){
-                  this.useridtmp[i]=res.data.shareinfo[i].yhid;
-                  this.recordid[i]=res.data.shareinfo[i].jlid;
-                  let tmp=this.recordid[i];
-                  const _this = this
-                  axios.get('/getShareByjlid',{
-                    params:{
-                      jlid:tmp
-                    }
-                  })
-                      .then(res => {
-                        _this.messageinform[i].show=true
-                        _this.messageinform[i].messagenum=res.data.jlid
-                        _this.messageinform[i].username=res.data.yhm
-                        _this.messageinform[i].datatime=res.data.fbsj
-                        _this.messageinform[i].passage=res.data.wz
-                        axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
-                          if(response){
-                            var data=response.data;
-                            this.messageinform[i].fans=data
-                          }
-                        }).catch(function (error) { // 请求失败处理
-                          console.log("---查询出错---！"+error);
-                        })
-                        axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
-                            .then(r=>{
-                              _this.messageinform[i].userUrl=r.data.tx;
-                            }).catch(err => {
-                          console.log('错误！！！！：'+err)
-                        })
-                        axios.get('/getPhotoByjlid',{
-                          params:{
-                            jlid:tmp
-                          }
-                        })
-                            .then(res => {
-                              _this.ph=res.data
-                              var j=0
-                              for(j=0;j<_this.ph.length;j++){
-                                _this.messageinform[i].photourl[j]=_this.ph[j].zp
-                              }
-                              _this.messageinform[i].photolen=_this.ph.length
-                              console.log("photolen:"+ _this.messageinform[i].photolen)
-                              axios.post('/likecount?jlid='+tmp)
-                                  .then(res=>{
-                                    //console.log(res.data)
-                                    _this.messageinform[i].lovenumber=res.data;
-                                  })
-                              axios.post('/starcount?jlid='+tmp)
-                                  .then(res=>{
-                                    //console.log(res.data)
-                                    _this.messageinform[i].starnumber=res.data;
-                                  })
-                              axios.get('/isfollow',{//查成功
-                                params:{
-                                  zyhid:localStorage.getItem('yhid'),
-                                  fsid:tmp
-                                }
-                              })
-                                  .then(res => {
-                                    // console.log(res.data)
-                                    if(res.data=="wu"){
-                                      this.messageinform[i].flag=false;
-                                      this.messageinform[i].msg="+关注"
-                                    }
-                                    else if(res.data=="1"){
-                                      this.messageinform[i].flag=false;
-                                      this.messageinform[i].msg="+关注"
-                                    }
-                                    else{
-                                      this.messageinform[i].flag=true;
-                                      this.messageinform[i].msg="已关注"
-                                    }
-                                  })
-                            })
-                      })
-                      .catch(err => {
-                        console.log('错误：'+err)
-                      })
+    //         })
+    //   }
+    // },
+    // cat(){
+    //   let searchText = this.$refs.searchval.value
+    //   console.log(searchText)
+    //   // if (searchText =='') {
+    //   //   return
+    //   // }
+    //   // else
+    //   {
+    //     this.showflag=true
+    //     axios.post('/animalsearch',
+    //         {
+    //           wz: searchText,
+    //           zl:"猫咪"
+    //         })
+    //         .then((res) => {
+    //           console.log(res.data)
+    //           var len=res.data.shareinfo.length
+    //           if(len>this.length){
+    //             this.length=3
+    //           }else{
+    //             this.length=len
+    //           }
+    //           if (res.status == 200) {
+    //             //this.$emit用于向父组件传值
+    //             // console.log(res.data);
+    //             for (let i=0; i<len; i++){
+    //               this.useridtmp[i]=res.data.shareinfo[i].yhid;
+    //               this.recordid[i]=res.data.shareinfo[i].jlid;
+    //               let tmp=this.recordid[i];
+    //               const _this = this
+    //               axios.get('/getShareByjlid',{
+    //                 params:{
+    //                   jlid:tmp
+    //                 }
+    //               })
+    //                   .then(res => {
+    //                     _this.messageinform[i].show=true
+    //                     _this.messageinform[i].messagenum=res.data.jlid
+    //                     _this.messageinform[i].username=res.data.yhm
+    //                     _this.messageinform[i].datatime=res.data.fbsj
+    //                     _this.messageinform[i].passage=res.data.wz
+    //                     axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
+    //                       if(response){
+    //                         var data=response.data;
+    //                         this.messageinform[i].fans=data
+    //                       }
+    //                     }).catch(function (error) { // 请求失败处理
+    //                       console.log("---查询出错---！"+error);
+    //                     })
+    //                     axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
+    //                         .then(r=>{
+    //                           _this.messageinform[i].userUrl=r.data.tx;
+    //                         }).catch(err => {
+    //                       console.log('错误！！！！：'+err)
+    //                     })
+    //                     axios.get('/getPhotoByjlid',{
+    //                       params:{
+    //                         jlid:tmp
+    //                       }
+    //                     })
+    //                         .then(res => {
+    //                           _this.ph=res.data
+    //                           var j=0
+    //                           for(j=0;j<_this.ph.length;j++){
+    //                             _this.messageinform[i].photourl[j]=_this.ph[j].zp
+    //                           }
+    //                           _this.messageinform[i].photolen=_this.ph.length
+    //                           console.log("photolen:"+ _this.messageinform[i].photolen)
+    //                           axios.post('/likecount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].lovenumber=res.data;
+    //                               })
+    //                           axios.post('/starcount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].starnumber=res.data;
+    //                               })
+    //                           axios.get('/isfollow',{//查成功
+    //                             params:{
+    //                               zyhid:localStorage.getItem('yhid'),
+    //                               fsid:tmp
+    //                             }
+    //                           })
+    //                               .then(res => {
+    //                                 // console.log(res.data)
+    //                                 if(res.data=="wu"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else if(res.data=="1"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else{
+    //                                   this.messageinform[i].flag=true;
+    //                                   this.messageinform[i].msg="已关注"
+    //                                 }
+    //                               })
+    //                         })
+    //                   })
+    //                   .catch(err => {
+    //                     console.log('错误：'+err)
+    //                   })
 
-                }
-              }
+    //             }
+    //           }
 
-            })
-      }
-    },
+    //         })
+    //   }
+    // },
+    // rabbit(){
+    //   let searchText = this.$refs.searchval.value
+    //   // console.log(searchText)
+    //   // if (searchText =='') {
+    //   //   return
+    //   // }
+    //   // else
+    //   {
+    //     this.showflag=true
+    //     axios.post('/animalsearch',
+    //         {
+    //           wz: searchText,
+    //           zl:"兔子"
+    //         })
+    //         .then((res) => {
+    //           console.log(res.data)
+    //           var len=res.data.shareinfo.length
+    //           if(len>this.length){
+    //             this.length=3
+    //           }else{
+    //             this.length=len
+    //           }
+    //           if (res.status == 200) {
+    //             //this.$emit用于向父组件传值
+    //             // console.log(res.data);
+    //             for (let i=0; i<len; i++){
+    //               this.useridtmp[i]=res.data.shareinfo[i].yhid;
+    //               this.recordid[i]=res.data.shareinfo[i].jlid;
+    //               let tmp=this.recordid[i];
+    //               const _this = this
+    //               axios.get('/getShareByjlid',{
+    //                 params:{
+    //                   jlid:tmp
+    //                 }
+    //               })
+    //                   .then(res => {
+    //                     _this.messageinform[i].show=true
+    //                     _this.messageinform[i].messagenum=res.data.jlid
+    //                     _this.messageinform[i].username=res.data.yhm
+    //                     _this.messageinform[i].datatime=res.data.fbsj
+    //                     _this.messageinform[i].passage=res.data.wz
+    //                     axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
+    //                       if(response){
+    //                         var data=response.data;
+    //                         this.messageinform[i].fans=data
+    //                       }
+    //                     }).catch(function (error) { // 请求失败处理
+    //                       console.log("---查询出错---！"+error);
+    //                     })
+    //                     axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
+    //                         .then(r=>{
+    //                           _this.messageinform[i].userUrl=r.data.tx;
+    //                         }).catch(err => {
+    //                       console.log('错误！！！！：'+err)
+    //                     })
+    //                     axios.get('/getPhotoByjlid',{
+    //                       params:{
+    //                         jlid:tmp
+    //                       }
+    //                     })
+    //                         .then(res => {
+    //                           _this.ph=res.data
+    //                           var j=0
+    //                           for(j=0;j<_this.ph.length;j++){
+    //                             _this.messageinform[i].photourl[j]=_this.ph[j].zp
+    //                           }
+    //                           _this.messageinform[i].photolen=_this.ph.length
+    //                           console.log("photolen:"+ _this.messageinform[i].photolen)
+    //                           axios.post('/likecount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].lovenumber=res.data;
+    //                               })
+    //                           axios.post('/starcount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].starnumber=res.data;
+    //                               })
+    //                           axios.get('/isfollow',{//查成功
+    //                             params:{
+    //                               zyhid:localStorage.getItem('yhid'),
+    //                               fsid:tmp
+    //                             }
+    //                           })
+    //                               .then(res => {
+    //                                 // console.log(res.data)
+    //                                 if(res.data=="wu"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else if(res.data=="1"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else{
+    //                                   this.messageinform[i].flag=true;
+    //                                   this.messageinform[i].msg="已关注"
+    //                                 }
+    //                               })
+    //                         })
+    //                   })
+    //                   .catch(err => {
+    //                     console.log('错误：'+err)
+    //                   })
+
+    //             }
+    //           }
+
+    //         })
+    //   }
+    // },
+    // mouse(){
+    //   let searchText = this.$refs.searchval.value
+    //   // console.log(searchText)
+    //   // if (searchText =='') {
+    //   //   return
+    //   // }
+    //   // else
+    //   {
+    //     this.showflag=true
+    //     axios.post('/animalsearch',
+    //         {
+    //           wz: searchText,
+    //           zl:"仓鼠"
+    //         })
+    //         .then((res) => {
+    //           console.log(res.data)
+    //           var len=res.data.shareinfo.length
+    //           if(len>this.length){
+    //             this.length=3
+    //           }else{
+    //             this.length=len
+    //           }
+    //           if (res.status == 200) {
+    //             //this.$emit用于向父组件传值
+    //             // console.log(res.data);
+    //             for (let i=0; i<len; i++){
+    //               this.useridtmp[i]=res.data.shareinfo[i].yhid;
+    //               this.recordid[i]=res.data.shareinfo[i].jlid;
+    //               let tmp=this.recordid[i];
+    //               const _this = this
+    //               axios.get('/getShareByjlid',{
+    //                 params:{
+    //                   jlid:tmp
+    //                 }
+    //               })
+    //                   .then(res => {
+    //                     _this.messageinform[i].show=true
+    //                     _this.messageinform[i].messagenum=res.data.jlid
+    //                     _this.messageinform[i].username=res.data.yhm
+    //                     _this.messageinform[i].datatime=res.data.fbsj
+    //                     _this.messageinform[i].passage=res.data.wz
+    //                     axios.post('/follow?zyhid='+_this.useridtmp[i]).then((response)=>{
+    //                       if(response){
+    //                         var data=response.data;
+    //                         this.messageinform[i].fans=data
+    //                       }
+    //                     }).catch(function (error) { // 请求失败处理
+    //                       console.log("---查询出错---！"+error);
+    //                     })
+    //                     axios.get('/user/getUserByNamelog/'+ _this.messageinform[i].username)
+    //                         .then(r=>{
+    //                           _this.messageinform[i].userUrl=r.data.tx;
+    //                         }).catch(err => {
+    //                       console.log('错误！！！！：'+err)
+    //                     })
+    //                     axios.get('/getPhotoByjlid',{
+    //                       params:{
+    //                         jlid:tmp
+    //                       }
+    //                     })
+    //                         .then(res => {
+    //                           _this.ph=res.data
+    //                           var j=0
+    //                           for(j=0;j<_this.ph.length;j++){
+    //                             _this.messageinform[i].photourl[j]=_this.ph[j].zp
+    //                           }
+    //                           _this.messageinform[i].photolen=_this.ph.length
+    //                           console.log("photolen:"+ _this.messageinform[i].photolen)
+    //                           axios.post('/likecount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].lovenumber=res.data;
+    //                               })
+    //                           axios.post('/starcount?jlid='+tmp)
+    //                               .then(res=>{
+    //                                 //console.log(res.data)
+    //                                 _this.messageinform[i].starnumber=res.data;
+    //                               })
+    //                           axios.get('/isfollow',{//查成功
+    //                             params:{
+    //                               zyhid:localStorage.getItem('yhid'),
+    //                               fsid:tmp
+    //                             }
+    //                           })
+    //                               .then(res => {
+    //                                 // console.log(res.data)
+    //                                 if(res.data=="wu"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else if(res.data=="1"){
+    //                                   this.messageinform[i].flag=false;
+    //                                   this.messageinform[i].msg="+关注"
+    //                                 }
+    //                                 else{
+    //                                   this.messageinform[i].flag=true;
+    //                                   this.messageinform[i].msg="已关注"
+    //                                 }
+    //                               })
+    //                         })
+    //                   })
+    //                   .catch(err => {
+    //                     console.log('错误：'+err)
+    //                   })
+
+    //             }
+    //           }
+
+    //         })
+    //   }
+    // },
     compare(property){
       return function(a,b){
         var value1 = a[property];
@@ -1750,6 +1857,9 @@ export default {
                         //console.log(res.data)
                         _this.messageinform[i].starnumber=res.data;
                       })
+                       if(localStorage.getItem('yhid'))
+                                this.messageinform[i].msg="+关注"
+                              else
                       axios.get('/isfollow',{//查成功
                         params:{
                           zyhid:localStorage.getItem('yhid'),
@@ -2192,12 +2302,13 @@ body {
   margin-left: 5%;
 }
 .s-search-text{
+  font-size: 18px;
   flex: 0 0 373px;
   flex-shrink: 0;
   margin-top: 1.5%;
   width: 373px;
   height: 41px;
-  background: #B6B6B6;
+  background: #e4e2e2;
   opacity: 0.3;
   box-sizing: border-box;
 }
@@ -2214,7 +2325,7 @@ body {
   width: 768px;
   height: 2px;
   opacity: 0.55;
-  background: #000000;
+  background: #e4e2e2;
   position: absolute;
   left: 24%;
 }
@@ -2283,9 +2394,11 @@ body {
   font-family: ZTSJ-BaguetteFont;
   font-weight: 400;
   color: #000000;
+  border: #e4e2e2;
   margin-right: 2%;
 }
 .btngroup2{
+  border: #e4e2e2;
   width: 112px;
   height: 31px;
   border-radius: 10px;
@@ -2297,6 +2410,7 @@ body {
   margin-right: 2%;
 }
 .btngroup3{
+  border: #e4e2e2;
   width: 112px;
   height: 31px;
   border-radius: 10px;
@@ -2332,7 +2446,7 @@ body {
   border-radius: 50%;
 }
 .username{
-  width: 75px;
+  width: 205px;
   height: 22px;
   font-size: 24px;
   font-family: ZTSJ-BaguetteFont;
@@ -2341,7 +2455,7 @@ body {
   padding-bottom: 10px;
 }
 .userdatetime{
-  width: 150px;
+  width: 450px;
   height: 14px;
   font-size: 24px;
   font-family: ZTSJ-BaguetteFont;
@@ -2349,6 +2463,7 @@ body {
   color: #000000;
 }
 .guanzhu{
+  margin-left: 30px;
   height: 24px;
   width: 65px;
   border-radius: 10%;

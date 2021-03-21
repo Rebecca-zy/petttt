@@ -1,14 +1,14 @@
 <template>
   <div class="vue-uploader" style="width:663px;height: 680px;">
     <div  >
-      <img src="https://ss2.baidu.com/6ON1bjeh1BF3odCf/it/u=32455353,1132199528&fm=15&gp=0.jpg" style="margin-left:25%;width: 280px;height: fit-content">
+      <img src="https://ss2.baidu.com/6ON1bjeh1BF3odCf/it/u=32455353,1132199528&fm=15&gp=0.jpg" style="margin-left:25%;width: 280px;object-fit: contain">
       <div v-if="files.length==0"style="margin-left: 30%" >下方选择图片合成pdf</div>
       <div v-else style="margin-left: 33%">至多选择4张图片</div>
     </div>
 
     <div class="file-list" style="width: 663px">
       <section v-for="(file, index) of files" class="file-item draggable-item">
-        <img style="margin-left: 20px" :src="file.src" alt="" ondragstart="return false;">
+        <img style="margin-left: 20px;object-fit: contain;height:200px" :src="file.src" alt="" ondragstart="return false;">
         <span class="file-remove" @click="remove(index)" >+</span>
       </section>
       <section v-if="status == 'ready'&&files.length<4" class="file-item">
@@ -160,6 +160,7 @@ export default {
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  
 }
 .vue-uploader .add {
   width: 80px;
@@ -175,7 +176,7 @@ export default {
 .vue-uploader .upload-func {
   display: flex;
   padding: 10px;
-  margin: 0px;
+  margin-left: 280px;
   /*border-top: 1px solid #ececec;*/
 }
 .vue-uploader .upload-func .progress-bar {

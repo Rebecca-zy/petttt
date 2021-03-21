@@ -71,6 +71,9 @@ export default {
   components:{
         vTop
     },
+  activated:function(){
+    localStorage.setItem("nowpage",2)
+  },
   data() {
     return {
       user: {

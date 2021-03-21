@@ -1,5 +1,5 @@
 {
-  "name": "pet1",
+  "name": "宠物的一生",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -10,6 +10,7 @@
   "dependencies": {
     "axios": "^0.21.1",
     "core-js": "^3.6.5",
+    "cos-js-sdk-v5": "^1.2.8",
     "element-ui": "^2.15.1",
     "iview": "^3.5.4",
     "nan": "^2.14.2",

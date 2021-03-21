@@ -40,6 +40,7 @@ export default {
     this.userinform.password="",
     this.userinform.checkword="",
     this.userinform.email=""
+    localStorage.setItem("nowpage",6)
   },
   data() {
     var checkname = (rule, value, callback) => {
@@ -146,7 +147,10 @@ export default {
                     console.log(re)
                     if(re.data=="testmail"){
                       console.log(re.data)
-                      alert('注册成功!');
+                      _this.$message({
+                          duration: 2000,
+                          message: '注册成功',
+                      });
                       axios.post('/user/register',{
                         username:_this.userinform.name,
                         password:_this.userinform.password,
@@ -154,18 +158,28 @@ export default {
                       }).then(function(resp){
                             console.log(resp)
                             _this.dis=true
+                            localStorage.setItem("nowpage",5)
                             _this.$router.replace('/content')
 
                           })
                         }
                     else{
-                      alert('该邮箱已注册');
+                      _this.$message({
+                          duration: 2000,
+                          message: '该邮箱已注册，请修改！',
+                      });
+                       this.dis=true
                       return false;
+                     
                     }
                   })    
               }
               else{
-                alert('用户名已存在');
+                _this.$message({
+                    duration: 2000,
+                    message: '该用户名已存在，请修改！',
+                });
+                 this.dis=true
                 return false;
               }
             })
@@ -174,7 +188,11 @@ export default {
             })
           }
           else {
-            console.log('信息错误，注册失败!');
+            _this.$message({
+                duration: 2000,
+                message: '信息错误，注册失败!',
+            });
+            this.dis=true
             return false;
           }
         });
@@ -187,7 +205,7 @@ export default {
 <style scoped>
 .registerbox{
   width: 1440px;
-  height: 800px;
+  height: 700px;
 }
 .longpets{
   margin-top:4px;

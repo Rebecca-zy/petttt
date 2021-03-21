@@ -5,6 +5,17 @@ module.exports = {
   lintOnSave: true, // 在保存时校验格式
   productionSourceMap: false, // 生产环境是否生成 SourceMap
 
+  // // 自定义logo
+  // pwa: {
+  //     iconPaths: {
+  //         favicon32: 'favicon.ico',
+  //         favicon16: 'favicon.ico',
+  //         appleTouchIcon: 'favicon.ico',
+  //         maskIcon: 'favicon.ico',
+  //         msTileImage: 'favicon.ico'
+  //     }
+  // },
+
   devServer: {
     port: 8080, //默认的打开端口号
     open: true, //自动打开浏览器

@@ -5,10 +5,16 @@
       <img :src="topUrl" class="toplogo">
       <p @click="top_goto('home',1)"  :class="[nowpage==1?'webitem1_a':'webitem1']">首页</p>
       <p @click="top_goto('pethome',2)" :class="[nowpage==2?'webitem1_a':'webitem1']">流浪之家💕</p>
-      <p @click="top_goto('knowledgecard',3)" :class="[nowpage==3?'webitem1_a':'webitem1']">宠物识别🔍</p>
       <p @click="top_goto('hospital',4)" :class="[nowpage==4?'webitem1_a':'webitem1']">医疗资源💊</p>
       <img :src="imgUrl" class="img">
-      <p class="webitem1">扫码小程序</p>
+      <!-- <p class="webitem1">扫码小程序</p> -->
+       <el-popover  class="webitem1"
+          placement="bottom"
+          min-width="150"
+          trigger="click">
+          <img :src="wxUrl" class="wximg">
+          <span slot="reference">扫码小程序</span>
+      </el-popover>              
       <div class="sousuo">
         <input type="text" class="webitem4" ref="topsearchval" id="topinput"></input>
         <div class="webitem5" @click="top_gotosearch">
@@ -16,9 +22,11 @@
         </div>
       </div>
       <img :src="userimg" @click="top_gotouser()" class="userimg" >
+      <p v-if="islogin==1" :class="[nowpage==99?'webitem1_a':'webitem1']" >{{yhm}}</p>
       <p v-if="islogin==1" :class="[nowpage==5?'webitem1_a':'webitem1']" @click="top_outgoto('content',5)">注销</p>
       <p v-if="islogin==0" :class="[nowpage==5?'webitem1_a':'webitem1']" @click="top_goto('content',5)">登陆</p>
       <p  v-if="islogin==0" :class="[nowpage==6?'webitem1_a':'webitem1']" @click="top_goto('petregister',6)">注册</p>
+
     </div>
 </template>
 
@@ -26,14 +34,17 @@
 import { mapMutations } from 'vuex';
 const axios=require('axios');
 export default {
+
   name:'v-top',
   data() {
     return {
+      wxUrl:require("@/assets/img/img1.png"),
       topUrl:require("@/assets/img/toplogo.png"),
       imgUrl:require("@/assets/img/img1.png"),
       userimg:require("@/assets/img/userimg.png"),
       islogin:0,
       nowpage:0,
+      yhm:""
     }
   },
   activated:function(){
@@ -43,17 +54,25 @@ export default {
         .then(res=>{
           console.log("头像："+res.data)
           this.userimg=res.data.tx
+          this.yhm=JSON.parse(localStorage.getItem('yhm'))
         }).catch(err => {
           console.log('错误！！！！：'+err)
       })
+    }
+    else{
+      this.islogin=0,
+      this.userimg=require("@/assets/img/userimg.png")
     }
     console.log(window.location.href)
     this.nowpage=localStorage.getItem('nowpage')
   },
   methods: {
+    photoSuccess(file,key,index,subkey){
+        this.photoUpload({file,main:"topic",key,index,subkey})
+    },    
     top_gotouser(){
       if(localStorage.getItem('yhid')){
-        this.$router.push('/userhistory');
+        this.$router.push('/userhome');
         localStorage.setItem("nowpage",0)
       }
       else{
@@ -67,8 +86,10 @@ export default {
     },
     top_outgoto(e,t){
       localStorage.setItem("nowpage",t)
-      localStorage.removeItem("")
-      this.$router.push('/'+e);
+      localStorage.removeItem("yhm")
+      localStorage.removeItem("yhid")
+      localStorage.removeItem("userimg")
+      this.$router.replace('/'+e);
     },
     top_gotosearch(){
       var e=document.getElementById("topinput");
@@ -86,9 +107,15 @@ export default {
     },
   }
 }
+
 </script>
 
 <style scope>
+.wximg{
+  width: 250px;
+  height: 250px;
+  padding: 10px;
+}
 .tab{
   display: flex;
   flex-direction: row;

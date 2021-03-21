@@ -75,12 +75,18 @@ export default {
         if(response){
           data=response.data.newslist[0];
           console.log(data);
-          alert('查询成功');
+          _this.$message({
+                duration: 2000,
+                message: '查询成功',
+          });
           this.sm=data.life,this.ydjb=data.easyOfDisease,
           this.pz=data.name, this.bm=data.engName,this.xgtz=data.characters, this.jj=data.careKnowledge,this.pet=data.coverURL
         }
         else{
-          alert('查询失败，请重试！')
+          _this.$message({
+                duration: 2000,
+                message: '查询失败，请重试！',
+          });
         }
       }).catch(function (error) { // 请求失败处理
         console.log("---查询出错---！"+error);
