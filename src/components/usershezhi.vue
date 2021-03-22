@@ -200,32 +200,27 @@ export default {
       this.file = event.target.files[0]
     },
     //  文件上传
-    updata(){
-      console.log('点击了文件上传')
-      var data = new FormData();
-      // 将需要添加的参数添加进表单中
-      data.append("file",this.file)//获取需要上传的文件
-      console.log(data)
-      let headers = {headers: {"Content-Type": "multipart/form-data"}}//设置上传文件格式，为指定传输数据为二进制类型
-      axios.post('/useruploadimg',data,headers)
-          .then(res => {
-            if(res.status){
-              console.log(res.data[0]);
-              let tmp=res.data[0];
-              axios.post("/user/resetTx",{
-                tx:tmp,
-                yhid:localStorage.getItem("yhid")
-              }).then(res=>{
-                console.log(res)}
-                )
-            }else{
-              console.log('上传失败')
-            }
-          })
-          .catch(err => {
-            console.log('上传失败',err)
-          })
-    },
+       updata(){
+      console.log('点击了文件上传')
+      var data = new FormData();
+      // 将需要添加的参数添加进表单中
+      data.append("file",this.file)//获取需要上传的文件
+      let userId = localStorage.getItem("yhid");
+      data.append("userId",userId);
+      console.log(data)
+      // let headers = {headers: {"Content-Type": "multipart/form-data"}}//设置上传文件格式，为指定传输数据为二进制类型
+      axios.post('/user/changeTx',data)
+          .then(res => {
+            if(res.data.message === "success"){
+                      console.log('上传成功')
+            }else{
+              console.log('上传失败')
+            }
+          })
+          .catch(err => {
+            console.log('上传失败',err)
+          })
+    },
     setImg(){
 
     },

@@ -103,10 +103,10 @@
                 <option value=pet.pet.cwid v-for="(pet,index) in pets" :key="pet.index">{{pet.pet.xm}}</option>
               </select>
             </div>
-            <img class="user_historycat" :src="user_historycat" >
+            <!-- <img class="user_historycat" :src="user_historycat" >
             <div class="bottom_rigthbox_header_text2box">
               <div class="bottom_rigthbox_header_text2">导出回忆</div>
-            </div>
+            </div> -->
         </div>
         <div class="bottom_rigthboxinner">
           <div v-for="(messageinform,index) in messageinform" :key="messageinform.index" class="logcard">

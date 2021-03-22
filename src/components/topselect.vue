@@ -38,7 +38,7 @@ export default {
   name:'v-top',
   data() {
     return {
-      wxUrl:require("@/assets/img/img1.png"),
+      wxUrl:require("@/assets/img/wxurl.jpg"),
       topUrl:require("@/assets/img/toplogo.png"),
       imgUrl:require("@/assets/img/img1.png"),
       userimg:require("@/assets/img/userimg.png"),
@@ -50,7 +50,7 @@ export default {
   activated:function(){
     if(localStorage.getItem("yhm")){
       this.islogin=1
-      axios.get('http://localhost:8000/user/getUserByNamelog/'+JSON.parse(localStorage.getItem('yhm')))
+      axios.get('/getUserByNamelog/'+JSON.parse(localStorage.getItem('yhm')))
         .then(res=>{
           console.log("头像："+res.data)
           this.userimg=res.data.tx

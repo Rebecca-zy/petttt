@@ -50,7 +50,7 @@
                 <div class="homepicsbox">
                     <el-carousel :interval="4000" type="card" arrow="hover" height="250px" autoplay="autoplay" ref="carousel">
                     <el-carousel-item class="carousel-item" v-for="lunbo in lunbolist" :key="lunbo">
-                        <img class="carousel-img" :src="lunbo">
+                        <img  class="carousel-img"  :src="lunbo">
                     </el-carousel-item>
                     </el-carousel>
                 </div>
@@ -129,18 +129,24 @@
     </div>
 </template>
 <script>
+
 import vTop from '../components/topselect'
 import { videoPlayer } from 'vue-video-player'
 import 'video.js/dist/video-js.css'
+import { swiper, swiperSlide } from 'vue-awesome-swiper';
 const axios = require('axios');
 export default {
     components:{
         vTop,
-        videoPlayer
+        videoPlayer,
+        swiper,
+        swiperSlide
     },
     data(){
+        
         return{
-            wxUrl:require("@/assets/img/img1.png"),
+            
+            wxUrl:require("@/assets/img/wxurl.jpg"),
             longpets:require("@/assets/img/longpets.png"),
             logo1:require("@/assets/img/home_logo_liulang.png"),
             logo2:require("@/assets/img/home_logo_kepu.png"),
@@ -280,7 +286,7 @@ export default {
                 fluid : false, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                 sources: [{
                     type: "video/mp4", // 类型
-                    src: 'http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4' //url地址
+                    src: '' //url地址
                 }],
                 poster: '', // 封面地址
                 notSupportedMessage : '此视频暂无法播放，请稍后再试', //允许覆盖Video.js无法播放媒体源时显示的默认信息。
@@ -430,13 +436,6 @@ export default {
             const _this = this
             await axios.get('/getRandomptid',{                     
             }). then( r => {
-                // console.log(r.data)
-                // _this.tuijianlist_pic[0].jlid=r.data[0]
-                // _this.tuijianlist_pic[1].jlid=r.data[1]
-                // _this.tuijianlist_pic[2].jlid=r.data[2]
-                // await _this.getptJlData(r.data[0],0);
-                // await _this.getptJlData(r.data[1],1);
-                // await _this.getptJlData(r.data[2],2);
                 var i=0
                 while(i<3){
                     _this.tuijianlist_pic[i].jlid=r.data[i]
@@ -477,7 +476,7 @@ export default {
                         }).catch(err => {
                             console.log('错误！！！！：'+err)
                         })
-                        axios.get('/user/getUserByNamelog/'+ _this.tuijianlist_video[0].username)
+                        axios.get('/user/getUserByNamelog/'+ _this.tuijianlist_pic[i].username)
                         .then(r=>{
                              _this.tuijianlist_pic[i].userurl=r.data.tx;
                         }).catch(err => {
@@ -987,9 +986,11 @@ export default {
         }
     }
 }   
+
 </script>
 
 <style scoped>
+ 
 .wximg{
   width: 250px;
   height: 250px;
@@ -998,9 +999,9 @@ export default {
 .carousel-item {
     width: 100%;
     height: 100%;
-    /* background: white; */
-    /* display: flex;
-    justify-content: center; */
+    background: white; 
+    display: flex;
+    justify-content: center;
 }
 .carousel-img {
     max-width: 100%;
@@ -1067,9 +1068,9 @@ body {
 .homefenqus2{
     width: 300px;
     height: 24px;
-    display: flex;
+    /* display: flex;
     flex-direction: row;
-    justify-content: left;
+    justify-content: left; */
 }
 .homefenqus2_col{
     min-width: 250px;
@@ -1145,6 +1146,7 @@ body {
 .tuijianpic{
     width: 178px;
     height: 116px;
+    object-fit: cover;
 }
 /* 左右间隔20px */
 .tuijianright{

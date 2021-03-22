@@ -413,7 +413,7 @@ export default {
           .then((response)=>{
             console.log("pets:")
             console.log(response)
-            this.pets=response.data
+            _this.pets=response.data
           }).catch(function (error) { // 请求失败处理
         console.log("---查询出错---！"+error);
       })
@@ -432,7 +432,7 @@ export default {
     },
     getuserinfo(){
       const _this= this
-      axios.get('/user/getUserByNamelog/'+"sywtest")
+      axios.get('/user/getUserByNamelog/'+JSON.parse(localStorage.getItem('yhm')))
           .then(async res=>{
             console.log(res.data)
             _this.user_id=res.data.yhid

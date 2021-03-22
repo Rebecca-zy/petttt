@@ -28,9 +28,9 @@ module.exports = {
       "/api": {
         // target: "http://10.10.0.22:8001", //后端的接口地址
         //本地调试用
-        target: "http://localhost:8000",
+        // target: "http: //localhost:8000",
         //服务器部署用
-        // target: "http://121.5.79.150:8000",
+        target: "http://121.5.79.150:8000",
         changeOrigin: true, //开启跨域
         pathRewrite: {
           "^/api": "" //这里即为重写后的地址，baseURL里的地址要换成这个

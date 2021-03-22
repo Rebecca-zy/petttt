@@ -292,25 +292,10 @@ export default {
 				str += d.getDate() + ' ';
 				return str;
 		},
-    submit() {
-      //console.log(document.getElementById('input1').value)
-      if (this.files.length == 0&&document.getElementById('input1').value=="") {
-        console.warn('no file!');
-        return
-      }
-      else if (this.files.length != 0) {
-        let formData = new FormData()
-        //当点击上传按钮时，将会遍历所有选中的文件，并添加到自定义的FormData中
-        this.files.forEach((item) => {
-          // console.log(item)
-          formData.append("file", item.file)
-        })
-        let headers = {headers: {"Content-Type": "multipart/form-data"}}//设置上传文件格式，为指定传输数据为二进制类型
-        axios.post('/useruploadimg',formData,headers)
-          .then(res => {
-            if(res.status){
+    thensubmit(){
+      if(res.status){
               //console.log('文件上传成功')
-              //console.log(res.data)
+              console.log(res.data)
               var reason = document.getElementById('input1').value;
               this.arr.passage=reason
               this.arr.photourl=res.data
@@ -326,10 +311,45 @@ export default {
             }else{
               console.log('上传失败')
             }
+    },
+    submit() {
+      //console.log(document.getElementById('input1').value)
+      if (this.files.length == 0&&document.getElementById('input1').value=="") {
+        console.warn('no file!');
+        return
+      }
+      else if (this.files.length != 0) {
+        let formData = new FormData()
+        //当点击上传按钮时，将会遍历所有选中的文件，并添加到自定义的FormData中
+        var i=0
+        var flag=0
+        var arr=new Array(this.files.length)
+        while(i<this.files.length){
+          formData.append("file", this.files[i])
+          axios.post('/useruploadimg',formData)
+          .then(res => {
+            arr[i]=res.data
+            i++
           })
           .catch(err => {
             console.log('上传失败',err)
           })
+          if(i==this.files.length-1)
+            flag=1
+          if(flag==1)
+            var reason = document.getElementById('input1').value;
+            this.arr.passage=reason
+            this.arr.photourl=arr
+            this.arr.vdurl=arr
+            this.arr.datatime=this.current()
+            console.log(arr)
+            axios.post('/addshare?userid='+this.arr.userid+'&username='+this.arr.username+'&userurl='+this.arr.userurl+'&datatime='+this.arr.datatime+'&passage='+this.arr.passage+'&photourl='+this.arr.photourl+'&vdurl='+this.arr.vdurl+'&isphoto='+this.arr.isphoto+'&fqh='+this.arr.fqh+'&cwid='+this.arr.cwid)
+            .then((response)=>{
+              this.clean()
+            }).catch(function (error) { // 请求失败处理
+              console.log("---查询出错---！"+error);
+            })
+        }
       }
       else{
         var reason = document.getElementById('input1').value;
@@ -344,6 +364,58 @@ export default {
         })
       }
     },
+    // submit() {
+    //   //console.log(document.getElementById('input1').value)
+    //   if (this.files.length == 0&&document.getElementById('input1').value=="") {
+    //     console.warn('no file!');
+    //     return
+    //   }
+    //   else if (this.files.length != 0) {
+    //     let formData = new FormData()
+    //     //当点击上传按钮时，将会遍历所有选中的文件，并添加到自定义的FormData中
+    //     this.files.forEach((item) => {
+    //       // console.log(item)
+    //       formData.append("file", item.file)
+    //     })
+    //     let headers = {headers: {"Content-Type": "multipart/form-data"}}//设置上传文件格式，为指定传输数据为二进制类型
+    //     axios.post('/useruploadimg',formData,headers)
+    //       .then(res => {
+    //         if(res.status){
+    //           //console.log('文件上传成功')
+    //           console.log(res.data)
+    //           var reason = document.getElementById('input1').value;
+    //           this.arr.passage=reason
+    //           this.arr.photourl=res.data
+    //           this.arr.vdurl=res.data
+    //           this.arr.datatime=this.current()
+    //           //console.log(this.arr)
+    //           axios.post('/addshare?userid='+this.arr.userid+'&username='+this.arr.username+'&userurl='+this.arr.userurl+'&datatime='+this.arr.datatime+'&passage='+this.arr.passage+'&photourl='+this.arr.photourl+'&vdurl='+this.arr.vdurl+'&isphoto='+this.arr.isphoto+'&fqh='+this.arr.fqh+'&cwid='+this.arr.cwid)
+    //           .then((response)=>{
+    //             this.clean()
+    //           }).catch(function (error) { // 请求失败处理
+    //             console.log("---查询出错---！"+error);
+    //           })
+    //         }else{
+    //           console.log('上传失败')
+    //         }
+    //       })
+    //       .catch(err => {
+    //         console.log('上传失败',err)
+    //       })
+    //   }
+    //   else{
+    //     var reason = document.getElementById('input1').value;
+    //     this.arr.passage=reason
+    //     this.arr.datatime=this.current()
+    //     //console.log(this.arr)
+    //     axios.post('/addshare?userid='+this.arr.userid+'&username='+this.arr.username+'&userurl='+this.arr.userurl+'&datatime='+this.arr.datatime+'&passage='+this.arr.passage+'&photourl='+this.arr.photourl+'&vdurl='+this.arr.vdurl+'&isphoto='+this.arr.isphoto+'&fqh='+this.arr.fqh+'&cwid='+this.arr.cwid)
+    //     .then((response)=>{
+    //       this.clean()
+    //     }).catch(function (error) { // 请求失败处理
+    //       console.log("---查询出错---！"+error);
+    //     })
+    //   }
+    // },
     clean(){
       this.arr.isphoto=9
       this.files=[]

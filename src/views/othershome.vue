@@ -214,7 +214,7 @@ export default {
 }
 </script>
 
-<style >
+<style  scoped>
 /* card */
   .text {
     font-size: 14px;

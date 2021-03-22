@@ -1,5 +1,5 @@
 {
-  "name": "宠物的一生",
+  "name": "petttt",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -14,7 +14,9 @@
     "element-ui": "^2.15.1",
     "iview": "^3.5.4",
     "nan": "^2.14.2",
+    "swiper": "^6.5.0",
     "vue": "^2.6.11",
+    "vue-awesome-swiper": "^4.1.1",
     "vue-axios": "^3.2.4",
     "vue-baidu-map": "^0.21.22",
     "vue-directive-image-previewer": "^2.2.2",
